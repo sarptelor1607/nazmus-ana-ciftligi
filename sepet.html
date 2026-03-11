@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sepetim — Nazmuş Ana Çiftliği</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">🫒</span>
+        <span class="logo__text">Nazmuş Ana Çiftliği</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html#products">Ürünler</a>
+        <a href="index.html#about">Hakkımızda</a>
+        <a href="index.html#contact">İletişim</a>
+      </nav>
+      <div class="header__actions">
+        <!-- Para Birimi Seçici -->
+        <div class="currency-switcher" id="currencySwitcher">
+          <button class="currency-btn" data-currency="TRY">₺</button>
+          <button class="currency-btn" data-currency="USD">$</button>
+          <button class="currency-btn" data-currency="EUR">€</button>
+        </div>
+        <button class="btn btn--outline btn--sm" id="openAuthBtn">Giriş Yap</button>
+        <div class="user-menu" id="userMenu" style="display:none">
+          <button class="user-menu__trigger" id="userMenuTrigger">
+            <span class="user-avatar" id="userAvatar"></span>
+            <span id="userName"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="user-menu__dropdown" id="userDropdown">
+            <a href="sepet.html" class="user-menu__item">🛒 Sepetimi Görüntüle</a>
+            <button class="user-menu__item user-menu__item--danger" id="logoutBtn">Çıkış Yap</button>
+          </div>
+        </div>
+        <a href="index.html" class="btn btn--primary btn--sm">Alışverişe Devam</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Sepetim</h1>
+      <p id="pageSubtitle">Sepetinizdeki ürünler aşağıda listelenmiştir.</p>
+    </div>
+  </div>
+
+  <!-- SEPET LAYOUT -->
+  <div class="container">
+    <div class="sepet-layout" id="sepetLayout">
+
+      <!-- SOL: Ürün Tablosu -->
+      <div>
+        <div class="cart-table" id="cartTable">
+          <div class="cart-table__head">
+            <span>Ürün</span>
+            <span>Birim Fiyat</span>
+            <span>Adet</span>
+            <span>Toplam</span>
+            <span></span>
+          </div>
+          <div id="cartRows">
+            <!-- JS ile doldurulacak -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SAĞ: Sipariş Özeti -->
+      <div class="order-summary" id="orderSummary">
+        <h2>Sipariş Özeti</h2>
+
+        <!-- Ürün bazlı alt toplamlar -->
+        <div class="summary-items-detail" id="summaryItems"></div>
+
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Ara Toplam</span>
+            <span id="subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Kargo</span>
+            <span>Ücretsiz</span>
+          </div>
+        </div>
+        <hr class="summary-divider" />
+        <div class="summary-total">
+          <span>Genel Toplam</span>
+          <span id="grandTotal">$0.00</span>
+        </div>
+
+        <div id="paypalButtonContainer"></div>
+        <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:12px">
+          🔒 Ödemeniz PayPal güvencesiyle korunmaktadır.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authOverlay">
+    <div class="modal" id="authModal">
+      <button class="modal-close" id="authClose">✕</button>
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-tab="login">Giriş Yap</button>
+        <button class="modal-tab" data-tab="register">Kayıt Ol</button>
+      </div>
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label>E-posta</label>
+          <input type="email" id="loginEmail" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+        </div>
+        <p class="auth-error" id="loginError"></p>
+        <button type="submit" class="btn btn--primary" style="width:100%">Giriş Yap</button>
+      </form>
+      <form class="auth-form hidden" id="registerForm">
+        <div class="form-group">
+          <label>Ad Soyad</label>
+          <input type="text" id="regName" placeholder="Ad Soyad"
+            pattern="[a-zA-ZğĞüÜşŞıİöÖçÇ\s]+"
+            title="Yalnızca harf ve boşluk kullanabilirsiniz."
+            maxlength="60" required />
+        </div>
+        <div class="form-group">
+          <label>E-posta</label>
+          <input type="email" id="regEmail" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" id="regPassword" placeholder="En az 6 karakter" minlength="6" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre Tekrar</label>
+          <input type="password" id="regPassword2" placeholder="Şifreyi tekrar girin" required />
+        </div>
+        <p class="auth-error" id="registerError"></p>
+        <button type="submit" class="btn btn--primary" style="width:100%">Kayıt Ol</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer" style="margin-top:auto">
+    <div class="container footer__inner">
+      <span class="logo__text">🫒 Nazmuş Ana Çiftliği</span>
+      <p>© 2025 Tüm hakları saklıdır.</p>
+      <div class="footer__socials">
+        <a href="#">Instagram</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="currency.js"></script>
+  <script src="auth.js"></script>
+  <script src="cart.js"></script>
+  <script src="sepet.js"></script>
+</body>
+</html>

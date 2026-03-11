@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nazmuş Ana Çiftliği — El Yapımı Doğal Ürünler</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">🫒</span>
+        <span class="logo__text">Nazmuş Ana Çiftliği</span>
+      </a>
+      <nav class="nav">
+        <a href="#products">Ürünler</a>
+        <a href="#about">Hakkımızda</a>
+        <a href="#contact">İletişim</a>
+      </nav>
+      <div class="header__actions">
+        <!-- Para Birimi Seçici -->
+        <div class="currency-switcher" id="currencySwitcher">
+          <button class="currency-btn" data-currency="TRY">₺</button>
+          <button class="currency-btn" data-currency="USD">$</button>
+          <button class="currency-btn" data-currency="EUR">€</button>
+        </div>
+        <!-- Giriş yapılmamış -->
+        <button class="btn btn--outline btn--sm" id="openAuthBtn">Giriş Yap</button>
+        <!-- Giriş yapılmış (JS ile gösterilir) -->
+        <div class="user-menu" id="userMenu" style="display:none">
+          <button class="user-menu__trigger" id="userMenuTrigger">
+            <span class="user-avatar" id="userAvatar"></span>
+            <span id="userName"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="user-menu__dropdown" id="userDropdown">
+            <a href="sepet.html" class="user-menu__item">🛒 Sepetimi Görüntüle</a>
+            <button class="user-menu__item user-menu__item--danger" id="logoutBtn">Çıkış Yap</button>
+          </div>
+        </div>
+        <!-- Sepet -->
+        <button class="cart-btn" id="cartBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="hero__tag">%100 Doğal · El Yapımı</p>
+        <h1 class="hero__title">Köyün Bereketini<br />Sofranıza Taşıyoruz</h1>
+        <p class="hero__desc">Geleneksel yöntemlerle, katkısız olarak üretilen zeytinyağı, salça, turşu ve daha fazlası.</p>
+        <a href="#products" class="btn btn--primary">Ürünleri Keşfet</a>
+      </div>
+      <div class="hero__img">
+        <div class="hero__img-circle"><span>🫙</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container features__grid">
+      <div class="feature-card">
+        <span>🌿</span>
+        <h3>Doğal İçerik</h3>
+        <p>Hiçbir katkı maddesi, renk verici veya koruyucu bulunmaz.</p>
+      </div>
+      <div class="feature-card">
+        <span>🚚</span>
+        <h3>Hızlı Kargo</h3>
+        <p>Siparişiniz 2–3 iş günü içinde kapınızda.</p>
+      </div>
+      <div class="feature-card">
+        <span>🔒</span>
+        <h3>Güvenli Ödeme</h3>
+        <p>PayPal güvencesiyle kolay ve güvenli alışveriş.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="container">
+      <h2 class="section-title">Ürünlerimiz</h2>
+      <p class="section-subtitle">Tarladan sofraya, elle seçilmiş lezzetler</p>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Tümü</button>
+        <button class="filter-btn" data-filter="yag">Zeytinyağı</button>
+        <button class="filter-btn" data-filter="salca">Salça</button>
+        <button class="filter-btn" data-filter="tursu">Turşu</button>
+        <button class="filter-btn" data-filter="zeytin">Zeytin</button>
+      </div>
+      <div class="products__grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container about__inner">
+      <div class="about__text">
+        <h2 class="section-title">Hakkımızda</h2>
+        <p>Ege'nin bereketli topraklarında, nesilden nesile aktarılan tariflerle üretim yapıyoruz. Her kavanoz, her şişe — sevgiyle ve özenle hazırlanır.</p>
+        <p>Zeytinyağımız soğuk sıkma yöntemiyle elde edilir, salçamız güneşte kurutulur, turşularımız ise geleneksel kaya tuzu ile yapılır.</p>
+      </div>
+      <div class="about__stats">
+        <div class="stat">
+          <span class="stat__num">12+</span>
+          <span class="stat__label">Yıllık Deneyim</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">500+</span>
+          <span class="stat__label">Mutlu Müşteri</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">20+</span>
+          <span class="stat__label">Farklı Ürün</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container contact__inner">
+      <h2 class="section-title">İletişim</h2>
+      <p class="section-subtitle">Sorularınız için bize ulaşın</p>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <input type="text" placeholder="Adınız" required />
+          <input type="email" placeholder="E-posta" required />
+        </div>
+        <textarea placeholder="Mesajınız..." rows="4" required></textarea>
+        <button type="submit" class="btn btn--primary">Gönder</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="logo__text">🫒 Nazmuş Ana Çiftliği</span>
+      <p>© 2025 Tüm hakları saklıdır.</p>
+      <div class="footer__socials">
+        <a href="#">Instagram</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer__header">
+      <h2>Sepetim</h2>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-drawer__items" id="cartItems"></div>
+    <div class="cart-drawer__footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Toplam</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <a href="sepet.html" class="btn btn--primary" style="width:100%;text-align:center;margin-bottom:10px">
+        Sepeti Görüntüle
+      </a>
+    </div>
+  </aside>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authOverlay">
+    <div class="modal" id="authModal">
+      <button class="modal-close" id="authClose">✕</button>
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-tab="login">Giriş Yap</button>
+        <button class="modal-tab" data-tab="register">Kayıt Ol</button>
+      </div>
+
+      <!-- Giriş Formu -->
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label>E-posta</label>
+          <input type="email" id="loginEmail" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+        </div>
+        <p class="auth-error" id="loginError"></p>
+        <button type="submit" class="btn btn--primary" style="width:100%">Giriş Yap</button>
+      </form>
+
+      <!-- Kayıt Formu -->
+      <form class="auth-form hidden" id="registerForm">
+        <div class="form-group">
+          <label>Ad Soyad</label>
+          <input type="text" id="regName" placeholder="Ad Soyad"
+            pattern="[a-zA-ZğĞüÜşŞıİöÖçÇ\s]+"
+            title="Yalnızca harf ve boşluk kullanabilirsiniz."
+            maxlength="60" required />
+        </div>
+        <div class="form-group">
+          <label>E-posta</label>
+          <input type="email" id="regEmail" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" id="regPassword" placeholder="En az 6 karakter" minlength="6" required />
+        </div>
+        <div class="form-group">
+          <label>Şifre Tekrar</label>
+          <input type="password" id="regPassword2" placeholder="Şifreyi tekrar girin" required />
+        </div>
+        <p class="auth-error" id="registerError"></p>
+        <button type="submit" class="btn btn--primary" style="width:100%">Kayıt Ol</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="currency.js"></script>
+  <script src="auth.js"></script>
+  <script src="cart.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
