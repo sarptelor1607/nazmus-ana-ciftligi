@@ -1,8 +1,7 @@
 // ===== SEPET SAYFASI — Köy Lezzetleri =====
-// EmailJS — index.js ile aynı değerleri kullan
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-const EMAILJS_SERVICE    = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE   = "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY = "yDBggSbpkFeuKjXA0";
+const EMAILJS_SERVICE    = "service_95tublp";
+const EMAILJS_TEMPLATE   = "template_wek1lf8";
 
 // Sepetteki item için dile göre ad/badge döndür (PRODUCTS global olarak products.js'den gelir)
 function itemLang(item, field) {
@@ -36,8 +35,8 @@ function initAuthUI() {
   }
 
   openAuthBtn.addEventListener("click", openAuthModal);
-  logoutBtn.addEventListener("click", () => {
-    Auth.logout();
+  logoutBtn.addEventListener("click", async () => {
+    await Auth.logout();
     window.location.reload();
   });
   userMenuTrigger.addEventListener("click", (e) => {
@@ -85,12 +84,15 @@ function initAuthModal() {
     });
   });
 
-  document.getElementById("loginForm").addEventListener("submit", (e) => {
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const result = Auth.login(
+    const btn = e.target.querySelector("button[type=submit]");
+    btn.disabled = true;
+    const result = await Auth.login(
       document.getElementById("loginEmail").value,
       document.getElementById("loginPassword").value
     );
+    btn.disabled = false;
     if (result.success) {
       closeAuthModal();
       window.location.reload();
@@ -130,7 +132,7 @@ function initAuthModal() {
     }
   });
 
-  document.getElementById("verifyBtn").addEventListener("click", () => {
+  document.getElementById("verifyBtn").addEventListener("click", async () => {
     if (!_sepetPendingReg) return;
     if (Date.now() > _sepetPendingReg.expiresAt) {
       document.getElementById("verifyError").textContent = Lang.t("verifyExpired");
@@ -142,7 +144,10 @@ function initAuthModal() {
       document.getElementById("verifyError").textContent = Lang.t("verifyWrong");
       return;
     }
-    const result = Auth.register(_sepetPendingReg.name, _sepetPendingReg.email, _sepetPendingReg.password);
+    const btn = document.getElementById("verifyBtn");
+    btn.disabled = true;
+    const result = await Auth.register(_sepetPendingReg.name, _sepetPendingReg.email, _sepetPendingReg.password);
+    btn.disabled = false;
     _sepetPendingReg = null;
     if (result.success) {
       closeAuthModal();
@@ -352,11 +357,13 @@ function initLangSwitcher() {
 
 // ---- Init ----
 document.addEventListener("DOMContentLoaded", () => {
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-  initLangSwitcher();
-  initCurrencySwitcher();
-  initAuthUI();
-  initAuthModal();
-  renderSepet();
-  Lang.applyLang();
+  Auth.onReady(() => {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    initLangSwitcher();
+    initCurrencySwitcher();
+    initAuthUI();
+    initAuthModal();
+    renderSepet();
+    Lang.applyLang();
+  });
 });

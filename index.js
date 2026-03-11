@@ -38,8 +38,8 @@ function initAuthUI() {
   }
 
   openAuthBtn.addEventListener("click", openAuthModal);
-  logoutBtn.addEventListener("click", () => {
-    Auth.logout();
+  logoutBtn.addEventListener("click", async () => {
+    await Auth.logout();
     window.location.reload();
   });
   userMenuTrigger.addEventListener("click", (e) => {
@@ -91,12 +91,15 @@ function initAuthModal() {
     });
   });
 
-  document.getElementById("loginForm").addEventListener("submit", (e) => {
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const result = Auth.login(
+    const btn = e.target.querySelector("button[type=submit]");
+    btn.disabled = true;
+    const result = await Auth.login(
       document.getElementById("loginEmail").value,
       document.getElementById("loginPassword").value
     );
+    btn.disabled = false;
     if (result.success) {
       closeAuthModal();
       initAuthUI();
@@ -138,7 +141,7 @@ function initAuthModal() {
     }
   });
 
-  document.getElementById("verifyBtn").addEventListener("click", () => {
+  document.getElementById("verifyBtn").addEventListener("click", async () => {
     if (!pendingReg) return;
     if (Date.now() > pendingReg.expiresAt) {
       document.getElementById("verifyError").textContent = Lang.t("verifyExpired");
@@ -150,7 +153,10 @@ function initAuthModal() {
       document.getElementById("verifyError").textContent = Lang.t("verifyWrong");
       return;
     }
-    const result = Auth.register(pendingReg.name, pendingReg.email, pendingReg.password);
+    const btn = document.getElementById("verifyBtn");
+    btn.disabled = true;
+    const result = await Auth.register(pendingReg.name, pendingReg.email, pendingReg.password);
+    btn.disabled = false;
     pendingReg = null;
     if (result.success) {
       closeAuthModal();
@@ -451,20 +457,22 @@ function initContactForm() {
 
 // ===== INIT =====
 document.addEventListener("DOMContentLoaded", () => {
-  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  initLangSwitcher();
-  initHeroSlider();
-  initCurrencySwitcher();
-  initAuthUI();
-  initAuthModal();
-  renderProducts();
-  initFilters();
-  initContactForm();
-  updateCartCount();
-  renderDrawer();
-  Lang.applyLang();
+  Auth.onReady(() => {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    initLangSwitcher();
+    initHeroSlider();
+    initCurrencySwitcher();
+    initAuthUI();
+    initAuthModal();
+    renderProducts();
+    initFilters();
+    initContactForm();
+    updateCartCount();
+    renderDrawer();
+    Lang.applyLang();
 
-  document.getElementById("cartBtn").addEventListener("click", openCart);
-  document.getElementById("cartClose").addEventListener("click", closeCart);
-  document.getElementById("cartOverlay").addEventListener("click", closeCart);
+    document.getElementById("cartBtn").addEventListener("click", openCart);
+    document.getElementById("cartClose").addEventListener("click", closeCart);
+    document.getElementById("cartOverlay").addEventListener("click", closeCart);
+  });
 });
