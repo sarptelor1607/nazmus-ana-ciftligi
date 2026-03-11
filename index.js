@@ -340,10 +340,84 @@ function initLangSwitcher() {
         document.querySelector(".filter-btn.active")?.dataset.filter || "all"
       );
       renderDrawer();
+      if (_heroRefresh) _heroRefresh();
     });
   });
 
   updateActive();
+}
+
+// ===== HERO SLIDER =====
+const SLIDE_INTERVAL = 5000;
+const SLIDE_BG = {
+  yag:    ["#f0fdf4", "#dcfce7"],
+  salca:  ["#fff7ed", "#fed7aa"],
+  tursu:  ["#ecfdf5", "#a7f3d0"],
+  zeytin: ["#fafaf9", "#d6d3d1"],
+};
+let _heroRefresh = null;
+
+function initHeroSlider() {
+  let current = 0;
+  let timer;
+  const showcase = document.getElementById("heroShowcase");
+  const dotsWrap = document.getElementById("heroDots");
+  const heroEl   = document.getElementById("hero");
+
+  PRODUCTS.forEach((_, i) => {
+    const btn = document.createElement("button");
+    btn.className = "hero-dot";
+    btn.addEventListener("click", () => goTo(i, 1));
+    dotsWrap.appendChild(btn);
+  });
+
+  function updateDots() {
+    dotsWrap.querySelectorAll(".hero-dot").forEach((d, i) => {
+      d.classList.toggle("active", i === current);
+    });
+  }
+
+  function updateBg() {
+    const [c1, c2] = SLIDE_BG[PRODUCTS[current].category] || ["#f0fdf4", "#dcfce7"];
+    heroEl.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
+    const [s1, s2] = SLIDE_BG[PRODUCTS[current].category] || ["#b7e4c7", "#74c69d"];
+    showcase.style.background = `linear-gradient(135deg, ${s1 === "#f0fdf4" ? "#b7e4c7" : s1}, ${s2 === "#dcfce7" ? "#74c69d" : s2})`;
+  }
+
+  function renderShowcase(direction) {
+    const p = PRODUCTS[current];
+    const fromX = direction >= 0 ? "60px" : "-60px";
+    showcase.innerHTML = `
+      <span class="hero-showcase__emoji" style="transform:translateX(${fromX});opacity:0;transition:none">${p.emoji}</span>
+      <span class="hero-showcase__name">${pLang(p, "name")}</span>
+    `;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const em = showcase.querySelector(".hero-showcase__emoji");
+      if (!em) return;
+      em.style.transition = "transform 0.5s cubic-bezier(.25,.46,.45,.94), opacity 0.5s ease";
+      em.style.transform = "translateX(0)";
+      em.style.opacity = "1";
+    }));
+  }
+
+  function goTo(index, direction = 1) {
+    current = ((index % PRODUCTS.length) + PRODUCTS.length) % PRODUCTS.length;
+    updateDots();
+    updateBg();
+    renderShowcase(direction);
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1, 1), SLIDE_INTERVAL);
+  }
+
+  document.getElementById("heroPrev").addEventListener("click", () => goTo(current - 1, -1));
+  document.getElementById("heroNext").addEventListener("click", () => goTo(current + 1, 1));
+
+  _heroRefresh = () => renderShowcase(0);
+  goTo(0, 1);
 }
 
 // ===== CONTACT =====
@@ -379,6 +453,7 @@ function initContactForm() {
 document.addEventListener("DOMContentLoaded", () => {
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
   initLangSwitcher();
+  initHeroSlider();
   initCurrencySwitcher();
   initAuthUI();
   initAuthModal();

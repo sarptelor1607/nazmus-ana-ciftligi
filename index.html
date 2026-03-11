@@ -63,7 +63,10 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="hero">
+    <button class="hero-arrow hero-arrow--prev" id="heroPrev">&#10094;</button>
+    <button class="hero-arrow hero-arrow--next" id="heroNext">&#10095;</button>
+    <div class="hero-dots" id="heroDots"></div>
     <div class="container hero__inner">
       <div class="hero__text">
         <p class="hero__tag" data-i18n="heroTag">%100 Doğal · El Yapımı</p>
@@ -72,7 +75,7 @@
         <a href="#products" class="btn btn--primary" data-i18n="heroBtn">Ürünleri Keşfet</a>
       </div>
       <div class="hero__img">
-        <div class="hero__img-circle"><span>🫙</span></div>
+        <div class="hero-showcase" id="heroShowcase"></div>
       </div>
     </div>
   </section>
