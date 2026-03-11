@@ -154,6 +154,17 @@
         <p class="auth-error" id="registerError"></p>
         <button type="submit" class="btn btn--primary" style="width:100%" data-i18n="registerSubmit">Kayıt Ol</button>
       </form>
+      <!-- Doğrulama adımı -->
+      <div class="auth-form hidden" id="verifyStep">
+        <p style="font-size:14px;color:var(--gray);text-align:center;margin-bottom:16px" data-i18n="verifyMsg">E-postanıza 6 haneli bir doğrulama kodu gönderdik.</p>
+        <div class="form-group">
+          <label data-i18n="verifyLabel">Doğrulama Kodu</label>
+          <input type="text" id="verifyCode" data-i18n="verifyPh" placeholder="6 haneli kod" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" />
+        </div>
+        <p class="auth-error" id="verifyError"></p>
+        <button type="button" id="verifyBtn" class="btn btn--primary" style="width:100%" data-i18n="verifyBtn">Doğrula</button>
+        <button type="button" id="verifyBackBtn" class="btn btn--outline" style="width:100%;margin-top:8px" data-i18n="verifyBack">Geri Dön</button>
+      </div>
     </div>
   </div>
 
@@ -171,6 +182,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="lang.js"></script>
   <script src="currency.js"></script>
   <script src="auth.js"></script>

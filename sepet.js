@@ -1,4 +1,8 @@
 // ===== SEPET SAYFASI — Köy Lezzetleri =====
+// EmailJS — index.js ile aynı değerleri kullan
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE    = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE   = "YOUR_TEMPLATE_ID";
 
 // Sepetteki item için dile göre ad/badge döndür (PRODUCTS global olarak products.js'den gelir)
 function itemLang(item, field) {
@@ -44,6 +48,16 @@ function initAuthUI() {
 }
 
 // ---- Auth Modal ----
+let _sepetPendingReg = null;
+
+function _sepetResetVerifyStep() {
+  document.getElementById("verifyStep").classList.add("hidden");
+  document.getElementById("registerForm").classList.remove("hidden");
+  document.getElementById("verifyError").textContent = "";
+  document.getElementById("verifyCode").value = "";
+  _sepetPendingReg = null;
+}
+
 function openAuthModal() {
   document.getElementById("authOverlay").classList.add("open");
 }
@@ -51,6 +65,7 @@ function closeAuthModal() {
   document.getElementById("authOverlay").classList.remove("open");
   document.getElementById("loginError").textContent    = "";
   document.getElementById("registerError").textContent = "";
+  _sepetResetVerifyStep();
 }
 
 function initAuthModal() {
@@ -66,6 +81,7 @@ function initAuthModal() {
       const which = tab.dataset.tab;
       document.getElementById("loginForm").classList.toggle("hidden", which !== "login");
       document.getElementById("registerForm").classList.toggle("hidden", which !== "register");
+      _sepetResetVerifyStep();
     });
   });
 
@@ -83,26 +99,60 @@ function initAuthModal() {
     }
   });
 
-  document.getElementById("registerForm").addEventListener("submit", (e) => {
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const p1 = document.getElementById("regPassword").value;
-    const p2 = document.getElementById("regPassword2").value;
+    const p1   = document.getElementById("regPassword").value;
+    const p2   = document.getElementById("regPassword2").value;
     if (p1 !== p2) {
       document.getElementById("registerError").textContent = Lang.t("passMatch");
       return;
     }
-    const result = Auth.register(
-      document.getElementById("regName").value,
-      document.getElementById("regEmail").value,
-      p1
-    );
+    const name  = document.getElementById("regName").value;
+    const email = document.getElementById("regEmail").value;
+    const btn   = e.target.querySelector("button[type=submit]");
+    btn.disabled = true;
+    document.getElementById("registerError").textContent = "";
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    try {
+      await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+        to_name:  name,
+        to_email: email,
+        code:     code,
+      });
+      _sepetPendingReg = { name, email, password: p1, code, expiresAt: Date.now() + 10 * 60 * 1000 };
+      document.getElementById("registerForm").classList.add("hidden");
+      document.getElementById("verifyStep").classList.remove("hidden");
+    } catch {
+      document.getElementById("registerError").textContent = Lang.t("verifyEmailErr");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById("verifyBtn").addEventListener("click", () => {
+    if (!_sepetPendingReg) return;
+    if (Date.now() > _sepetPendingReg.expiresAt) {
+      document.getElementById("verifyError").textContent = Lang.t("verifyExpired");
+      _sepetResetVerifyStep();
+      return;
+    }
+    const entered = document.getElementById("verifyCode").value.trim();
+    if (entered !== _sepetPendingReg.code) {
+      document.getElementById("verifyError").textContent = Lang.t("verifyWrong");
+      return;
+    }
+    const result = Auth.register(_sepetPendingReg.name, _sepetPendingReg.email, _sepetPendingReg.password);
+    _sepetPendingReg = null;
     if (result.success) {
       closeAuthModal();
       window.location.reload();
     } else {
-      document.getElementById("registerError").textContent = result.error;
+      document.getElementById("verifyError").textContent = result.error;
     }
   });
+
+  document.getElementById("verifyBackBtn").addEventListener("click", _sepetResetVerifyStep);
 }
 
 // ---- Toast ----
@@ -302,6 +352,7 @@ function initLangSwitcher() {
 
 // ---- Init ----
 document.addEventListener("DOMContentLoaded", () => {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
   initLangSwitcher();
   initCurrencySwitcher();
   initAuthUI();
