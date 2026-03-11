@@ -1,6 +1,16 @@
 // ===== SEPET SAYFASI — Köy Lezzetleri =====
 
-// ---- Auth UI (her sayfada ortak) ----
+// Sepetteki item için dile göre ad/badge döndür (PRODUCTS global olarak products.js'den gelir)
+function itemLang(item, field) {
+  if (Lang.getSelected() === "en") {
+    if (item[field + "En"]) return item[field + "En"];
+    const product = PRODUCTS.find((p) => p.id === item.id);
+    if (product && product[field + "En"]) return product[field + "En"];
+  }
+  return item[field];
+}
+
+// ---- Auth UI ----
 function initAuthUI() {
   const user = Auth.getCurrentUser();
   const openAuthBtn    = document.getElementById("openAuthBtn");
@@ -78,7 +88,7 @@ function initAuthModal() {
     const p1 = document.getElementById("regPassword").value;
     const p2 = document.getElementById("regPassword2").value;
     if (p1 !== p2) {
-      document.getElementById("registerError").textContent = "Şifreler eşleşmiyor.";
+      document.getElementById("registerError").textContent = Lang.t("passMatch");
       return;
     }
     const result = Auth.register(
@@ -133,13 +143,13 @@ function renderPayPalButton() {
       }),
     onApprove: (_data, actions) =>
       actions.order.capture().then(() => {
-        showToast("Ödeme başarılı! Teşekkürler 🎉");
+        showToast(Lang.t("toastPayOk"));
         Cart.clear();
         renderSepet();
         paypalRendered = false;
       }),
     onError: (err) => {
-      showToast("Ödeme sırasında hata oluştu.");
+      showToast(Lang.t("toastPayErr"));
       console.error(err);
     },
   }).render("#paypalButtonContainer");
@@ -152,20 +162,19 @@ function renderSepet() {
   const user   = Auth.getCurrentUser();
   const items  = Cart.getItems();
   const rows   = document.getElementById("cartRows");
-  const sumItems = document.getElementById("summaryItems");
+  const sumItems     = document.getElementById("summaryItems");
   const subtotalEl   = document.getElementById("subtotal");
   const grandTotalEl = document.getElementById("grandTotal");
   const ppContainer  = document.getElementById("paypalButtonContainer");
   const orderSummary = document.getElementById("orderSummary");
   const pageSubtitle = document.getElementById("pageSubtitle");
 
-  // Giriş yapılmamışsa
   if (!user) {
     rows.innerHTML = `
       <div class="cart-table__empty">
         <span>🔒</span>
-        <p>Sepetinizi görüntülemek için giriş yapın.</p>
-        <button class="btn btn--primary" onclick="openAuthModal()">Giriş Yap / Kayıt Ol</button>
+        <p>${Lang.t("sepetLoginMsg")}</p>
+        <button class="btn btn--primary" onclick="openAuthModal()">${Lang.t("sepetLoginBtn")}</button>
       </div>`;
     orderSummary.style.display = "none";
     return;
@@ -174,12 +183,12 @@ function renderSepet() {
   orderSummary.style.display = "block";
 
   if (items.length === 0) {
-    pageSubtitle.textContent = "Sepetiniz şu an boş.";
+    pageSubtitle.textContent = Lang.t("sepetEmpty");
     rows.innerHTML = `
       <div class="cart-table__empty">
         <span>🛒</span>
-        <p>Sepetinizde henüz ürün yok.</p>
-        <a href="index.html" class="btn btn--primary">Alışverişe Başla</a>
+        <p>${Lang.t("sepetNoItems")}</p>
+        <a href="index.html" class="btn btn--primary">${Lang.t("sepetShopBtn")}</a>
       </div>`;
     sumItems.innerHTML = "";
     subtotalEl.textContent   = "$0.00";
@@ -190,16 +199,15 @@ function renderSepet() {
   }
 
   const total = Cart.getTotal();
-  pageSubtitle.textContent = `${Cart.getCount()} ürün · Toplam ${Currency.formatPrice(total)}`;
+  pageSubtitle.textContent = `${Cart.getCount()} ${Lang.getSelected() === "en" ? "items" : "ürün"} · ${Lang.getSelected() === "en" ? "Total" : "Toplam"} ${Currency.formatPrice(total)}`;
 
-  // Ürün satırları
   rows.innerHTML = items.map((item) => `
     <div class="cart-table__row">
       <div class="ct-product">
         <span class="ct-product__emoji">${item.emoji}</span>
         <div>
-          <div class="ct-product__name">${item.name}</div>
-          <span class="ct-product__badge">${item.badge}</span>
+          <div class="ct-product__name">${itemLang(item, "name")}</div>
+          <span class="ct-product__badge">${itemLang(item, "badge")}</span>
         </div>
       </div>
       <div class="ct-price">${Currency.formatPrice(item.price)}</div>
@@ -213,12 +221,11 @@ function renderSepet() {
     </div>
   `).join("");
 
-  // Sipariş özeti — ürün bazlı
   sumItems.innerHTML = items.map((item) => `
     <div class="summary-item-row">
       <span class="summary-item-name">
         <span>${item.emoji}</span>
-        <span>${item.name} × ${item.qty}</span>
+        <span>${itemLang(item, "name")} × ${item.qty}</span>
       </span>
       <span class="summary-item-subtotal">${Currency.formatPrice(item.price * item.qty)}</span>
     </div>
@@ -241,7 +248,7 @@ function removeItem(productId) {
   Cart.remove(productId);
   paypalRendered = false;
   renderSepet();
-  showToast("Ürün sepetten kaldırıldı.");
+  showToast(Lang.t("toastRemoved"));
 }
 
 // ---- Currency Switcher ----
@@ -268,10 +275,37 @@ function initCurrencySwitcher() {
   updateActive();
 }
 
+// ---- Language Switcher ----
+function initLangSwitcher() {
+  const switcher = document.getElementById("langSwitcher");
+  if (!switcher) return;
+
+  function updateActive() {
+    const selected = Lang.getSelected();
+    switcher.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.lang === selected);
+    });
+  }
+
+  switcher.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      Lang.setSelected(btn.dataset.lang);
+      updateActive();
+      Lang.applyLang();
+      paypalRendered = false;
+      renderSepet();
+    });
+  });
+
+  updateActive();
+}
+
 // ---- Init ----
 document.addEventListener("DOMContentLoaded", () => {
+  initLangSwitcher();
   initCurrencySwitcher();
   initAuthUI();
   initAuthModal();
   renderSepet();
+  Lang.applyLang();
 });

@@ -1,0 +1,59 @@
+// ===== ÜRÜN VERİLERİ — Köy Lezzetleri =====
+const PRODUCTS = [
+  {
+    id: 1, emoji: "🫒", category: "yag", price: 480,
+    name: "Sıkma Zeytinyağı",     nameEn: "Cold-Pressed Olive Oil (500ml)",
+    desc: "Soğuk sıkma, natürel, erken hasat. 500 ml cam şişe.",
+    descEn: "Cold-pressed, natural, early harvest. 500 ml glass bottle.",
+    badge: "Zeytinyağı", badgeEn: "Olive Oil",
+  },
+  {
+    id: 2, emoji: "🫒", category: "yag", price: 590,
+    name: "Zeytinyağı Büyük Boy", nameEn: "Cold-Pressed Olive Oil (1L)",
+    desc: "Soğuk sıkma, natürel, erken hasat. 1 lt cam şişe.",
+    descEn: "Cold-pressed, natural, early harvest. 1 lt glass bottle.",
+    badge: "Zeytinyağı", badgeEn: "Olive Oil",
+  },
+  {
+    id: 3, emoji: "🍅", category: "salca", price: 420,
+    name: "Ev Salçası — Domates", nameEn: "Homemade Tomato Paste",
+    desc: "Güneşte kurutulmuş, tuz hariç katkısız, 700 g kavanoz.",
+    descEn: "Sun-dried, additive-free except salt, 700 g jar.",
+    badge: "Salça", badgeEn: "Paste",
+  },
+  {
+    id: 4, emoji: "🌶️", category: "salca", price: 435,
+    name: "Ev Salçası — Biber",   nameEn: "Homemade Pepper Paste",
+    desc: "Acı biber harmanı, geleneksel tarif, 700 g kavanoz.",
+    descEn: "Hot pepper blend, traditional recipe, 700 g jar.",
+    badge: "Salça", badgeEn: "Paste",
+  },
+  {
+    id: 5, emoji: "🥒", category: "tursu", price: 410,
+    name: "Karışık Turşu",        nameEn: "Mixed Pickles",
+    desc: "Mevsim sebzeleri, kaya tuzu, sirke. 1 lt kavanoz.",
+    descEn: "Seasonal vegetables, rock salt, vinegar. 1 lt jar.",
+    badge: "Turşu", badgeEn: "Pickles",
+  },
+  {
+    id: 6, emoji: "🥒", category: "tursu", price: 400,
+    name: "Salatalık Turşusu",    nameEn: "Cucumber Pickles",
+    desc: "Çıtır salatalık, sarımsak, dereotu. 1 lt kavanoz.",
+    descEn: "Crispy cucumber, garlic, dill. 1 lt jar.",
+    badge: "Turşu", badgeEn: "Pickles",
+  },
+  {
+    id: 7, emoji: "🫒", category: "zeytin", price: 455,
+    name: "Yeşil Zeytin",         nameEn: "Green Olives",
+    desc: "El ile toplanmış, kırık yeşil zeytin, limon & sarımsaklı. 500 g.",
+    descEn: "Hand-picked, cracked green olives with lemon & garlic. 500 g.",
+    badge: "Zeytin", badgeEn: "Olives",
+  },
+  {
+    id: 8, emoji: "🫒", category: "zeytin", price: 470,
+    name: "Siyah Zeytin",         nameEn: "Black Olives",
+    desc: "Salamura siyah zeytin, yağlı ve aromalı. 500 g.",
+    descEn: "Brine-cured black olives, oily and flavorful. 500 g.",
+    badge: "Zeytin", badgeEn: "Olives",
+  },
+];

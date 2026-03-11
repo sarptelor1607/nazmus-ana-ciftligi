@@ -17,20 +17,23 @@
         <span class="logo__text">Nazmuş Ana Çiftliği</span>
       </a>
       <nav class="nav">
-        <a href="#products">Ürünler</a>
-        <a href="#about">Hakkımızda</a>
-        <a href="#contact">İletişim</a>
+        <a href="#products" data-i18n="navProducts">Ürünler</a>
+        <a href="#about"    data-i18n="navAbout">Hakkımızda</a>
+        <a href="#contact"  data-i18n="navContact">İletişim</a>
       </nav>
       <div class="header__actions">
+        <!-- Dil Seçici -->
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn" data-lang="tr">TR</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
         <!-- Para Birimi Seçici -->
         <div class="currency-switcher" id="currencySwitcher">
           <button class="currency-btn" data-currency="TRY">₺</button>
           <button class="currency-btn" data-currency="USD">$</button>
           <button class="currency-btn" data-currency="EUR">€</button>
         </div>
-        <!-- Giriş yapılmamış -->
-        <button class="btn btn--outline btn--sm" id="openAuthBtn">Giriş Yap</button>
-        <!-- Giriş yapılmış (JS ile gösterilir) -->
+        <button class="btn btn--outline btn--sm" id="openAuthBtn" data-i18n="loginBtn">Giriş Yap</button>
         <div class="user-menu" id="userMenu" style="display:none">
           <button class="user-menu__trigger" id="userMenuTrigger">
             <span class="user-avatar" id="userAvatar"></span>
@@ -40,8 +43,8 @@
               stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
           <div class="user-menu__dropdown" id="userDropdown">
-            <a href="sepet.html" class="user-menu__item">🛒 Sepetimi Görüntüle</a>
-            <button class="user-menu__item user-menu__item--danger" id="logoutBtn">Çıkış Yap</button>
+            <a href="sepet.html" class="user-menu__item" data-i18n="viewCart">🛒 Sepetimi Görüntüle</a>
+            <button class="user-menu__item user-menu__item--danger" id="logoutBtn" data-i18n="logoutBtn">Çıkış Yap</button>
           </div>
         </div>
         <!-- Sepet -->
@@ -63,10 +66,10 @@
   <section class="hero">
     <div class="container hero__inner">
       <div class="hero__text">
-        <p class="hero__tag">%100 Doğal · El Yapımı</p>
-        <h1 class="hero__title">Köyün Bereketini<br />Sofranıza Taşıyoruz</h1>
-        <p class="hero__desc">Geleneksel yöntemlerle, katkısız olarak üretilen zeytinyağı, salça, turşu ve daha fazlası.</p>
-        <a href="#products" class="btn btn--primary">Ürünleri Keşfet</a>
+        <p class="hero__tag" data-i18n="heroTag">%100 Doğal · El Yapımı</p>
+        <h1 class="hero__title" data-i18n="heroTitle">Köyün Bereketini<br />Sofranıza Taşıyoruz</h1>
+        <p class="hero__desc" data-i18n="heroDesc">Geleneksel yöntemlerle, katkısız olarak üretilen zeytinyağı, salça, turşu ve daha fazlası.</p>
+        <a href="#products" class="btn btn--primary" data-i18n="heroBtn">Ürünleri Keşfet</a>
       </div>
       <div class="hero__img">
         <div class="hero__img-circle"><span>🫙</span></div>
@@ -79,18 +82,18 @@
     <div class="container features__grid">
       <div class="feature-card">
         <span>🌿</span>
-        <h3>Doğal İçerik</h3>
-        <p>Hiçbir katkı maddesi, renk verici veya koruyucu bulunmaz.</p>
+        <h3 data-i18n="feat1Title">Doğal İçerik</h3>
+        <p data-i18n="feat1Desc">Hiçbir katkı maddesi, renk verici veya koruyucu bulunmaz.</p>
       </div>
       <div class="feature-card">
         <span>🚚</span>
-        <h3>Hızlı Kargo</h3>
-        <p>Siparişiniz 2–3 iş günü içinde kapınızda.</p>
+        <h3 data-i18n="feat2Title">Hızlı Kargo</h3>
+        <p data-i18n="feat2Desc">Siparişiniz 2–3 iş günü içinde kapınızda.</p>
       </div>
       <div class="feature-card">
         <span>🔒</span>
-        <h3>Güvenli Ödeme</h3>
-        <p>PayPal güvencesiyle kolay ve güvenli alışveriş.</p>
+        <h3 data-i18n="feat3Title">Güvenli Ödeme</h3>
+        <p data-i18n="feat3Desc">PayPal güvencesiyle kolay ve güvenli alışveriş.</p>
       </div>
     </div>
   </section>
@@ -98,14 +101,14 @@
   <!-- PRODUCTS -->
   <section class="products" id="products">
     <div class="container">
-      <h2 class="section-title">Ürünlerimiz</h2>
-      <p class="section-subtitle">Tarladan sofraya, elle seçilmiş lezzetler</p>
+      <h2 class="section-title" data-i18n="productsTitle">Ürünlerimiz</h2>
+      <p class="section-subtitle" data-i18n="productsSub">Tarladan sofraya, elle seçilmiş lezzetler</p>
       <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">Tümü</button>
-        <button class="filter-btn" data-filter="yag">Zeytinyağı</button>
-        <button class="filter-btn" data-filter="salca">Salça</button>
-        <button class="filter-btn" data-filter="tursu">Turşu</button>
-        <button class="filter-btn" data-filter="zeytin">Zeytin</button>
+        <button class="filter-btn active" data-filter="all"    data-i18n="filterAll">Tümü</button>
+        <button class="filter-btn"        data-filter="yag"    data-i18n="filterYag">Zeytinyağı</button>
+        <button class="filter-btn"        data-filter="salca"  data-i18n="filterSalca">Salça</button>
+        <button class="filter-btn"        data-filter="tursu"  data-i18n="filterTursu">Turşu</button>
+        <button class="filter-btn"        data-filter="zeytin" data-i18n="filterZeytin">Zeytin</button>
       </div>
       <div class="products__grid" id="productsGrid"></div>
     </div>
@@ -115,22 +118,22 @@
   <section class="about" id="about">
     <div class="container about__inner">
       <div class="about__text">
-        <h2 class="section-title">Hakkımızda</h2>
-        <p>Ege'nin bereketli topraklarında, nesilden nesile aktarılan tariflerle üretim yapıyoruz. Her kavanoz, her şişe — sevgiyle ve özenle hazırlanır.</p>
-        <p>Zeytinyağımız soğuk sıkma yöntemiyle elde edilir, salçamız güneşte kurutulur, turşularımız ise geleneksel kaya tuzu ile yapılır.</p>
+        <h2 class="section-title" data-i18n="aboutTitle">Hakkımızda</h2>
+        <p data-i18n="aboutP1">Ege'nin bereketli topraklarında, nesilden nesile aktarılan tariflerle üretim yapıyoruz. Her kavanoz, her şişe — sevgiyle ve özenle hazırlanır.</p>
+        <p data-i18n="aboutP2">Zeytinyağımız soğuk sıkma yöntemiyle elde edilir, salçamız güneşte kurutulur, turşularımız ise geleneksel kaya tuzu ile yapılır.</p>
       </div>
       <div class="about__stats">
         <div class="stat">
           <span class="stat__num">12+</span>
-          <span class="stat__label">Yıllık Deneyim</span>
+          <span class="stat__label" data-i18n="statExp">Yıllık Deneyim</span>
         </div>
         <div class="stat">
           <span class="stat__num">500+</span>
-          <span class="stat__label">Mutlu Müşteri</span>
+          <span class="stat__label" data-i18n="statCustomers">Mutlu Müşteri</span>
         </div>
         <div class="stat">
           <span class="stat__num">20+</span>
-          <span class="stat__label">Farklı Ürün</span>
+          <span class="stat__label" data-i18n="statProducts">Farklı Ürün</span>
         </div>
       </div>
     </div>
@@ -139,15 +142,15 @@
   <!-- CONTACT -->
   <section class="contact" id="contact">
     <div class="container contact__inner">
-      <h2 class="section-title">İletişim</h2>
-      <p class="section-subtitle">Sorularınız için bize ulaşın</p>
+      <h2 class="section-title" data-i18n="contactTitle">İletişim</h2>
+      <p class="section-subtitle" data-i18n="contactSub">Sorularınız için bize ulaşın</p>
       <form class="contact-form" id="contactForm">
         <div class="form-row">
-          <input type="text" placeholder="Adınız" required />
-          <input type="email" placeholder="E-posta" required />
+          <input type="text"  data-i18n="contactName"  placeholder="Adınız"   required />
+          <input type="email" data-i18n="contactEmail" placeholder="E-posta"  required />
         </div>
-        <textarea placeholder="Mesajınız..." rows="4" required></textarea>
-        <button type="submit" class="btn btn--primary">Gönder</button>
+        <textarea data-i18n="contactMsg" placeholder="Mesajınız..." rows="4" required></textarea>
+        <button type="submit" class="btn btn--primary" data-i18n="contactSend">Gönder</button>
       </form>
     </div>
   </section>
@@ -156,7 +159,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <span class="logo__text">🫒 Nazmuş Ana Çiftliği</span>
-      <p>© 2025 Tüm hakları saklıdır.</p>
+      <p data-i18n="footerRights">© 2025 Tüm hakları saklıdır.</p>
       <div class="footer__socials">
         <a href="#">Instagram</a>
         <a href="#">WhatsApp</a>
@@ -168,18 +171,17 @@
   <div class="cart-overlay" id="cartOverlay"></div>
   <aside class="cart-drawer" id="cartDrawer">
     <div class="cart-drawer__header">
-      <h2>Sepetim</h2>
+      <h2 data-i18n="drawerTitle">Sepetim</h2>
       <button class="cart-close" id="cartClose">✕</button>
     </div>
     <div class="cart-drawer__items" id="cartItems"></div>
     <div class="cart-drawer__footer" id="cartFooter" style="display:none">
       <div class="cart-total">
-        <span>Toplam</span>
+        <span data-i18n="drawerTotal">Toplam</span>
         <span id="cartTotal">$0.00</span>
       </div>
-      <a href="sepet.html" class="btn btn--primary" style="width:100%;text-align:center;margin-bottom:10px">
-        Sepeti Görüntüle
-      </a>
+      <a href="sepet.html" class="btn btn--primary" style="width:100%;text-align:center;margin-bottom:10px"
+         data-i18n="drawerViewBtn">Sepeti Görüntüle</a>
     </div>
   </aside>
 
@@ -188,47 +190,43 @@
     <div class="modal" id="authModal">
       <button class="modal-close" id="authClose">✕</button>
       <div class="modal-tabs">
-        <button class="modal-tab active" data-tab="login">Giriş Yap</button>
-        <button class="modal-tab" data-tab="register">Kayıt Ol</button>
+        <button class="modal-tab active" data-tab="login"    data-i18n="tabLogin">Giriş Yap</button>
+        <button class="modal-tab"        data-tab="register" data-i18n="tabRegister">Kayıt Ol</button>
       </div>
-
-      <!-- Giriş Formu -->
       <form class="auth-form" id="loginForm">
         <div class="form-group">
-          <label>E-posta</label>
-          <input type="email" id="loginEmail" placeholder="ornek@mail.com" required />
+          <label data-i18n="labelEmail">E-posta</label>
+          <input type="email" id="loginEmail" data-i18n="phEmail" placeholder="ornek@mail.com" required />
         </div>
         <div class="form-group">
-          <label>Şifre</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" required />
+          <label data-i18n="labelPassword">Şifre</label>
+          <input type="password" id="loginPassword" data-i18n="phPassword" placeholder="••••••••" required />
         </div>
         <p class="auth-error" id="loginError"></p>
-        <button type="submit" class="btn btn--primary" style="width:100%">Giriş Yap</button>
+        <button type="submit" class="btn btn--primary" style="width:100%" data-i18n="loginSubmit">Giriş Yap</button>
       </form>
-
-      <!-- Kayıt Formu -->
       <form class="auth-form hidden" id="registerForm">
         <div class="form-group">
-          <label>Ad Soyad</label>
-          <input type="text" id="regName" placeholder="Ad Soyad"
+          <label data-i18n="labelName">Ad Soyad</label>
+          <input type="text" id="regName" data-i18n="phName" placeholder="Ad Soyad"
             pattern="[a-zA-ZğĞüÜşŞıİöÖçÇ\s]+"
             title="Yalnızca harf ve boşluk kullanabilirsiniz."
             maxlength="60" required />
         </div>
         <div class="form-group">
-          <label>E-posta</label>
-          <input type="email" id="regEmail" placeholder="ornek@mail.com" required />
+          <label data-i18n="labelEmail">E-posta</label>
+          <input type="email" id="regEmail" data-i18n="phEmail" placeholder="ornek@mail.com" required />
         </div>
         <div class="form-group">
-          <label>Şifre</label>
-          <input type="password" id="regPassword" placeholder="En az 6 karakter" minlength="6" required />
+          <label data-i18n="labelPassword">Şifre</label>
+          <input type="password" id="regPassword" data-i18n="phRegPass" placeholder="En az 6 karakter" minlength="6" required />
         </div>
         <div class="form-group">
-          <label>Şifre Tekrar</label>
-          <input type="password" id="regPassword2" placeholder="Şifreyi tekrar girin" required />
+          <label data-i18n="labelPassword2">Şifre Tekrar</label>
+          <input type="password" id="regPassword2" data-i18n="phRegPass2" placeholder="Şifreyi tekrar girin" required />
         </div>
         <p class="auth-error" id="registerError"></p>
-        <button type="submit" class="btn btn--primary" style="width:100%">Kayıt Ol</button>
+        <button type="submit" class="btn btn--primary" style="width:100%" data-i18n="registerSubmit">Kayıt Ol</button>
       </form>
     </div>
   </div>
@@ -236,9 +234,11 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+  <script src="lang.js"></script>
   <script src="currency.js"></script>
   <script src="auth.js"></script>
   <script src="cart.js"></script>
+  <script src="products.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

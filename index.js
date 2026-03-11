@@ -1,16 +1,20 @@
 // ===== INDEX SAYFASI — Köy Lezzetleri =====
+// PRODUCTS artık products.js içinde tanımlı (global değişken)
 
-// ===== ÜRÜN VERİLERİ =====
-const PRODUCTS = [
-  { id: 1, name: "Sıkma Zeytinyağı",       desc: "Soğuk sıkma, natürel, erken hasat. 500 ml cam şişe.",               price: 480, emoji: "🫒", category: "yag",    badge: "Zeytinyağı" },
-  { id: 2, name: "Zeytinyağı Büyük Boy",   desc: "Soğuk sıkma, natürel, erken hasat. 1 lt cam şişe.",                 price: 590, emoji: "🫒", category: "yag",    badge: "Zeytinyağı" },
-  { id: 3, name: "Ev Salçası — Domates",   desc: "Güneşte kurutulmuş, tuz hariç katkısız, 700 g kavanoz.",            price: 420, emoji: "🍅", category: "salca",  badge: "Salça"      },
-  { id: 4, name: "Ev Salçası — Biber",     desc: "Acı biber harmanı, geleneksel tarif, 700 g kavanoz.",               price: 435, emoji: "🌶️", category: "salca",  badge: "Salça"      },
-  { id: 5, name: "Karışık Turşu",          desc: "Mevsim sebzeleri, kaya tuzu, sirke. 1 lt kavanoz.",                 price: 410, emoji: "🥒", category: "tursu",  badge: "Turşu"      },
-  { id: 6, name: "Salatalık Turşusu",      desc: "Çıtır salatalık, sarımsak, dereotu. 1 lt kavanoz.",               price: 400, emoji: "🥒", category: "tursu",  badge: "Turşu"      },
-  { id: 7, name: "Yeşil Zeytin",           desc: "El ile toplanmış, kırık yeşil zeytin, limon & sarımsaklı. 500 g.", price: 455, emoji: "🫒", category: "zeytin", badge: "Zeytin"     },
-  { id: 8, name: "Siyah Zeytin",           desc: "Salamura siyah zeytin, yağlı ve aromalı. 500 g.",                  price: 470, emoji: "🫒", category: "zeytin", badge: "Zeytin"     },
-];
+// Mevcut dile göre ürün alanını döndür
+function pLang(p, field) {
+  return Lang.getSelected() === "en" && p[field + "En"] ? p[field + "En"] : p[field];
+}
+
+// Sepetteki item için dile göre ad/badge döndür (eski item'lar için PRODUCTS'tan yedekle)
+function itemLang(item, field) {
+  if (Lang.getSelected() === "en") {
+    if (item[field + "En"]) return item[field + "En"];
+    const product = PRODUCTS.find((p) => p.id === item.id);
+    if (product && product[field + "En"]) return product[field + "En"];
+  }
+  return item[field];
+}
 
 // ===== AUTH UI =====
 function initAuthUI() {
@@ -92,7 +96,7 @@ function initAuthModal() {
     const p1 = document.getElementById("regPassword").value;
     const p2 = document.getElementById("regPassword2").value;
     if (p1 !== p2) {
-      document.getElementById("registerError").textContent = "Şifreler eşleşmiyor.";
+      document.getElementById("registerError").textContent = Lang.t("passMatch");
       return;
     }
     const result = Auth.register(
@@ -136,9 +140,9 @@ function renderDrawer() {
   if (!user) {
     container.innerHTML = `
       <p class="cart-empty" style="margin-top:60px">
-        Sepeti kullanmak için <button onclick="closeCart();openAuthModal();"
+        ${Lang.t("cartLoginMsg")} <button onclick="closeCart();openAuthModal();"
           style="background:none;border:none;cursor:pointer;color:var(--green);font-weight:600;font-size:15px">
-          giriş yapın
+          ${Lang.t("cartLoginLink")}
         </button>
       </p>`;
     footer.style.display = "none";
@@ -147,7 +151,7 @@ function renderDrawer() {
 
   const items = Cart.getItems();
   if (items.length === 0) {
-    container.innerHTML = '<p class="cart-empty">Sepetiniz boş.</p>';
+    container.innerHTML = `<p class="cart-empty">${Lang.t("cartEmpty")}</p>`;
     footer.style.display = "none";
     return;
   }
@@ -156,7 +160,7 @@ function renderDrawer() {
     <div class="cart-item">
       <span class="cart-item__emoji">${item.emoji}</span>
       <div class="cart-item__info">
-        <div class="cart-item__name">${item.name}</div>
+        <div class="cart-item__name">${itemLang(item, "name")}</div>
         <div class="cart-item__unit">Birim: ${Currency.formatPrice(item.price)}</div>
         <div class="cart-item__price">${Currency.formatPrice(item.price * item.qty)}</div>
         <div class="cart-item__qty">
@@ -169,8 +173,8 @@ function renderDrawer() {
     </div>
   `).join("");
 
-  totalEl.textContent      = Currency.formatPrice(Cart.getTotal());
-  footer.style.display     = "block";
+  totalEl.textContent  = Currency.formatPrice(Cart.getTotal());
+  footer.style.display = "block";
 }
 
 function drawerChangeQty(id, delta) {
@@ -183,7 +187,7 @@ function drawerRemove(id) {
   Cart.remove(id);
   updateCartCount();
   renderDrawer();
-  showToast("Ürün sepetten kaldırıldı.");
+  showToast(Lang.t("toastRemoved"));
 }
 
 function openCart() {
@@ -204,12 +208,12 @@ function renderProducts(filter = "all") {
     <div class="product-card">
       <div class="product-card__img">${p.emoji}</div>
       <div class="product-card__body">
-        <span class="product-card__badge">${p.badge}</span>
-        <div class="product-card__name">${p.name}</div>
-        <div class="product-card__desc">${p.desc}</div>
+        <span class="product-card__badge">${pLang(p, "badge")}</span>
+        <div class="product-card__name">${pLang(p, "name")}</div>
+        <div class="product-card__desc">${pLang(p, "desc")}</div>
         <div class="product-card__footer">
           <span class="product-card__price">${Currency.formatPrice(p.price)}</span>
-          <button class="add-to-cart" onclick="handleAddToCart(${p.id})">Sepete Ekle</button>
+          <button class="add-to-cart" onclick="handleAddToCart(${p.id})">${Lang.t("addToCart")}</button>
         </div>
       </div>
     </div>
@@ -218,7 +222,7 @@ function renderProducts(filter = "all") {
 
 function handleAddToCart(id) {
   if (!Auth.getCurrentUser()) {
-    showToast("Sepete eklemek için giriş yapın.");
+    showToast(Lang.t("toastLoginRequired"));
     openAuthModal();
     return;
   }
@@ -226,7 +230,7 @@ function handleAddToCart(id) {
   Cart.add(product);
   updateCartCount();
   renderDrawer();
-  showToast(`${product.name} sepete eklendi ✓`);
+  showToast(`${pLang(product, "name")} ${Lang.t("toastAdded")}`);
 }
 
 function initFilters() {
@@ -265,17 +269,45 @@ function initCurrencySwitcher() {
   updateActive();
 }
 
+// ===== LANGUAGE SWITCHER =====
+function initLangSwitcher() {
+  const switcher = document.getElementById("langSwitcher");
+  if (!switcher) return;
+
+  function updateActive() {
+    const selected = Lang.getSelected();
+    switcher.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.lang === selected);
+    });
+  }
+
+  switcher.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      Lang.setSelected(btn.dataset.lang);
+      updateActive();
+      Lang.applyLang();
+      renderProducts(
+        document.querySelector(".filter-btn.active")?.dataset.filter || "all"
+      );
+      renderDrawer();
+    });
+  });
+
+  updateActive();
+}
+
 // ===== CONTACT =====
 function initContactForm() {
   document.getElementById("contactForm").addEventListener("submit", (e) => {
     e.preventDefault();
-    showToast("Mesajınız iletildi, teşekkürler!");
+    showToast(Lang.t("toastMsgSent"));
     e.target.reset();
   });
 }
 
 // ===== INIT =====
 document.addEventListener("DOMContentLoaded", () => {
+  initLangSwitcher();
   initCurrencySwitcher();
   initAuthUI();
   initAuthModal();
@@ -284,6 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   updateCartCount();
   renderDrawer();
+  Lang.applyLang();
 
   document.getElementById("cartBtn").addEventListener("click", openCart);
   document.getElementById("cartClose").addEventListener("click", closeCart);

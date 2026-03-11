@@ -17,18 +17,23 @@
         <span class="logo__text">Nazmuş Ana Çiftliği</span>
       </a>
       <nav class="nav">
-        <a href="index.html#products">Ürünler</a>
-        <a href="index.html#about">Hakkımızda</a>
-        <a href="index.html#contact">İletişim</a>
+        <a href="index.html#products" data-i18n="navProducts">Ürünler</a>
+        <a href="index.html#about"    data-i18n="navAbout">Hakkımızda</a>
+        <a href="index.html#contact"  data-i18n="navContact">İletişim</a>
       </nav>
       <div class="header__actions">
+        <!-- Dil Seçici -->
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn" data-lang="tr">TR</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
         <!-- Para Birimi Seçici -->
         <div class="currency-switcher" id="currencySwitcher">
           <button class="currency-btn" data-currency="TRY">₺</button>
           <button class="currency-btn" data-currency="USD">$</button>
           <button class="currency-btn" data-currency="EUR">€</button>
         </div>
-        <button class="btn btn--outline btn--sm" id="openAuthBtn">Giriş Yap</button>
+        <button class="btn btn--outline btn--sm" id="openAuthBtn" data-i18n="loginBtn">Giriş Yap</button>
         <div class="user-menu" id="userMenu" style="display:none">
           <button class="user-menu__trigger" id="userMenuTrigger">
             <span class="user-avatar" id="userAvatar"></span>
@@ -38,11 +43,11 @@
               stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
           <div class="user-menu__dropdown" id="userDropdown">
-            <a href="sepet.html" class="user-menu__item">🛒 Sepetimi Görüntüle</a>
-            <button class="user-menu__item user-menu__item--danger" id="logoutBtn">Çıkış Yap</button>
+            <a href="sepet.html" class="user-menu__item" data-i18n="viewCart">🛒 Sepetimi Görüntüle</a>
+            <button class="user-menu__item user-menu__item--danger" id="logoutBtn" data-i18n="logoutBtn">Çıkış Yap</button>
           </div>
         </div>
-        <a href="index.html" class="btn btn--primary btn--sm">Alışverişe Devam</a>
+        <a href="index.html" class="btn btn--primary btn--sm" data-i18n="continueShopping">Alışverişe Devam</a>
       </div>
     </div>
   </header>
@@ -50,8 +55,8 @@
   <!-- PAGE HEADER -->
   <div class="page-header">
     <div class="container">
-      <h1>Sepetim</h1>
-      <p id="pageSubtitle">Sepetinizdeki ürünler aşağıda listelenmiştir.</p>
+      <h1 data-i18n="drawerTitle">Sepetim</h1>
+      <p id="pageSubtitle" data-i18n="sepetSubDefault">Sepetinizdeki ürünler aşağıda listelenmiştir.</p>
     </div>
   </div>
 
@@ -63,10 +68,10 @@
       <div>
         <div class="cart-table" id="cartTable">
           <div class="cart-table__head">
-            <span>Ürün</span>
-            <span>Birim Fiyat</span>
-            <span>Adet</span>
-            <span>Toplam</span>
+            <span data-i18n="colProduct">Ürün</span>
+            <span data-i18n="colUnit">Birim Fiyat</span>
+            <span data-i18n="colQty">Adet</span>
+            <span data-i18n="colTotal">Toplam</span>
             <span></span>
           </div>
           <div id="cartRows">
@@ -77,31 +82,30 @@
 
       <!-- SAĞ: Sipariş Özeti -->
       <div class="order-summary" id="orderSummary">
-        <h2>Sipariş Özeti</h2>
+        <h2 data-i18n="summaryTitle">Sipariş Özeti</h2>
 
         <!-- Ürün bazlı alt toplamlar -->
         <div class="summary-items-detail" id="summaryItems"></div>
 
         <div class="summary-rows">
           <div class="summary-row">
-            <span>Ara Toplam</span>
+            <span data-i18n="summarySubtotal">Ara Toplam</span>
             <span id="subtotal">$0.00</span>
           </div>
           <div class="summary-row">
-            <span>Kargo</span>
-            <span>Ücretsiz</span>
+            <span data-i18n="summaryShipping">Kargo</span>
+            <span data-i18n="summaryFree">Ücretsiz</span>
           </div>
         </div>
         <hr class="summary-divider" />
         <div class="summary-total">
-          <span>Genel Toplam</span>
+          <span data-i18n="summaryGrand">Genel Toplam</span>
           <span id="grandTotal">$0.00</span>
         </div>
 
         <div id="paypalButtonContainer"></div>
-        <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:12px">
-          🔒 Ödemeniz PayPal güvencesiyle korunmaktadır.
-        </p>
+        <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:12px"
+           data-i18n="paypalSafe">🔒 Ödemeniz PayPal güvencesiyle korunmaktadır.</p>
       </div>
 
     </div>
@@ -112,43 +116,43 @@
     <div class="modal" id="authModal">
       <button class="modal-close" id="authClose">✕</button>
       <div class="modal-tabs">
-        <button class="modal-tab active" data-tab="login">Giriş Yap</button>
-        <button class="modal-tab" data-tab="register">Kayıt Ol</button>
+        <button class="modal-tab active" data-tab="login"    data-i18n="tabLogin">Giriş Yap</button>
+        <button class="modal-tab"        data-tab="register" data-i18n="tabRegister">Kayıt Ol</button>
       </div>
       <form class="auth-form" id="loginForm">
         <div class="form-group">
-          <label>E-posta</label>
-          <input type="email" id="loginEmail" placeholder="ornek@mail.com" required />
+          <label data-i18n="labelEmail">E-posta</label>
+          <input type="email" id="loginEmail" data-i18n="phEmail" placeholder="ornek@mail.com" required />
         </div>
         <div class="form-group">
-          <label>Şifre</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" required />
+          <label data-i18n="labelPassword">Şifre</label>
+          <input type="password" id="loginPassword" data-i18n="phPassword" placeholder="••••••••" required />
         </div>
         <p class="auth-error" id="loginError"></p>
-        <button type="submit" class="btn btn--primary" style="width:100%">Giriş Yap</button>
+        <button type="submit" class="btn btn--primary" style="width:100%" data-i18n="loginSubmit">Giriş Yap</button>
       </form>
       <form class="auth-form hidden" id="registerForm">
         <div class="form-group">
-          <label>Ad Soyad</label>
-          <input type="text" id="regName" placeholder="Ad Soyad"
+          <label data-i18n="labelName">Ad Soyad</label>
+          <input type="text" id="regName" data-i18n="phName" placeholder="Ad Soyad"
             pattern="[a-zA-ZğĞüÜşŞıİöÖçÇ\s]+"
             title="Yalnızca harf ve boşluk kullanabilirsiniz."
             maxlength="60" required />
         </div>
         <div class="form-group">
-          <label>E-posta</label>
-          <input type="email" id="regEmail" placeholder="ornek@mail.com" required />
+          <label data-i18n="labelEmail">E-posta</label>
+          <input type="email" id="regEmail" data-i18n="phEmail" placeholder="ornek@mail.com" required />
         </div>
         <div class="form-group">
-          <label>Şifre</label>
-          <input type="password" id="regPassword" placeholder="En az 6 karakter" minlength="6" required />
+          <label data-i18n="labelPassword">Şifre</label>
+          <input type="password" id="regPassword" data-i18n="phRegPass" placeholder="En az 6 karakter" minlength="6" required />
         </div>
         <div class="form-group">
-          <label>Şifre Tekrar</label>
-          <input type="password" id="regPassword2" placeholder="Şifreyi tekrar girin" required />
+          <label data-i18n="labelPassword2">Şifre Tekrar</label>
+          <input type="password" id="regPassword2" data-i18n="phRegPass2" placeholder="Şifreyi tekrar girin" required />
         </div>
         <p class="auth-error" id="registerError"></p>
-        <button type="submit" class="btn btn--primary" style="width:100%">Kayıt Ol</button>
+        <button type="submit" class="btn btn--primary" style="width:100%" data-i18n="registerSubmit">Kayıt Ol</button>
       </form>
     </div>
   </div>
@@ -159,7 +163,7 @@
   <footer class="footer" style="margin-top:auto">
     <div class="container footer__inner">
       <span class="logo__text">🫒 Nazmuş Ana Çiftliği</span>
-      <p>© 2025 Tüm hakları saklıdır.</p>
+      <p data-i18n="footerRights">© 2025 Tüm hakları saklıdır.</p>
       <div class="footer__socials">
         <a href="#">Instagram</a>
         <a href="#">WhatsApp</a>
@@ -167,9 +171,11 @@
     </div>
   </footer>
 
+  <script src="lang.js"></script>
   <script src="currency.js"></script>
   <script src="auth.js"></script>
   <script src="cart.js"></script>
+  <script src="products.js"></script>
   <script src="sepet.js"></script>
 </body>
 </html>

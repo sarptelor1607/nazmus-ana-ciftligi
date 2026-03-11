@@ -1,0 +1,205 @@
+// ===== DİL MODÜLü — Köy Lezzetleri =====
+const Lang = (() => {
+  const KEY   = "kl_lang";
+  const LANGS = ["tr", "en"];
+
+  const T = {
+    tr: {
+      // Nav
+      navProducts: "Ürünler",
+      navAbout:    "Hakkımızda",
+      navContact:  "İletişim",
+      // Header
+      loginBtn: "Giriş Yap",
+      logoutBtn: "Çıkış Yap",
+      viewCart: "🛒 Sepetimi Görüntüle",
+      continueShopping: "Alışverişe Devam",
+      // Hero
+      heroTag:   "%100 Doğal · El Yapımı",
+      heroTitle: "Köyün Bereketini<br />Sofranıza Taşıyoruz",
+      heroDesc:  "Geleneksel yöntemlerle, katkısız olarak üretilen zeytinyağı, salça, turşu ve daha fazlası.",
+      heroBtn:   "Ürünleri Keşfet",
+      // Features
+      feat1Title: "Doğal İçerik",
+      feat1Desc:  "Hiçbir katkı maddesi, renk verici veya koruyucu bulunmaz.",
+      feat2Title: "Hızlı Kargo",
+      feat2Desc:  "Siparişiniz 2–3 iş günü içinde kapınızda.",
+      feat3Title: "Güvenli Ödeme",
+      feat3Desc:  "PayPal güvencesiyle kolay ve güvenli alışveriş.",
+      // Products
+      productsTitle: "Ürünlerimiz",
+      productsSub:   "Tarladan sofraya, elle seçilmiş lezzetler",
+      filterAll:     "Tümü",
+      filterYag:     "Zeytinyağı",
+      filterSalca:   "Salça",
+      filterTursu:   "Turşu",
+      filterZeytin:  "Zeytin",
+      addToCart:     "Sepete Ekle",
+      // About
+      aboutTitle: "Hakkımızda",
+      aboutP1:    "Ege'nin bereketli topraklarında, nesilden nesile aktarılan tariflerle üretim yapıyoruz. Her kavanoz, her şişe — sevgiyle ve özenle hazırlanır.",
+      aboutP2:    "Zeytinyağımız soğuk sıkma yöntemiyle elde edilir, salçamız güneşte kurutulur, turşularımız ise geleneksel kaya tuzu ile yapılır.",
+      statExp:       "Yıllık Deneyim",
+      statCustomers: "Mutlu Müşteri",
+      statProducts:  "Farklı Ürün",
+      // Contact
+      contactTitle: "İletişim",
+      contactSub:   "Sorularınız için bize ulaşın",
+      contactName:  "Adınız",
+      contactEmail: "E-posta",
+      contactMsg:   "Mesajınız...",
+      contactSend:  "Gönder",
+      // Footer
+      footerRights: "© 2025 Tüm hakları saklıdır.",
+      // Cart drawer
+      drawerTitle:   "Sepetim",
+      drawerTotal:   "Toplam",
+      drawerViewBtn: "Sepeti Görüntüle",
+      cartEmpty:     "Sepetiniz boş.",
+      cartLoginMsg:  "Sepeti kullanmak için",
+      cartLoginLink: "giriş yapın",
+      // Auth modal
+      tabLogin:       "Giriş Yap",
+      tabRegister:    "Kayıt Ol",
+      labelEmail:     "E-posta",
+      labelPassword:  "Şifre",
+      labelName:      "Ad Soyad",
+      labelPassword2: "Şifre Tekrar",
+      phEmail:        "ornek@mail.com",
+      phPassword:     "••••••••",
+      phName:         "Ad Soyad",
+      phRegPass:      "En az 6 karakter",
+      phRegPass2:     "Şifreyi tekrar girin",
+      loginSubmit:    "Giriş Yap",
+      registerSubmit: "Kayıt Ol",
+      passMatch:      "Şifreler eşleşmiyor.",
+      // Toasts
+      toastRemoved:      "Ürün sepetten kaldırıldı.",
+      toastLoginRequired:"Sepete eklemek için giriş yapın.",
+      toastAdded:        "sepete eklendi ✓",
+      toastMsgSent:      "Mesajınız iletildi, teşekkürler!",
+      toastPayOk:        "Ödeme başarılı! Teşekkürler 🎉",
+      toastPayErr:       "Ödeme sırasında hata oluştu.",
+      // Sepet page
+      sepetSubDefault: "Sepetinizdeki ürünler aşağıda listelenmiştir.",
+      sepetEmpty:      "Sepetiniz şu an boş.",
+      sepetLoginMsg:   "Sepetinizi görüntülemek için giriş yapın.",
+      sepetLoginBtn:   "Giriş Yap / Kayıt Ol",
+      sepetNoItems:    "Sepetinizde henüz ürün yok.",
+      sepetShopBtn:    "Alışverişe Başla",
+      colProduct:      "Ürün",
+      colUnit:         "Birim Fiyat",
+      colQty:          "Adet",
+      colTotal:        "Toplam",
+      summaryTitle:    "Sipariş Özeti",
+      summarySubtotal: "Ara Toplam",
+      summaryShipping: "Kargo",
+      summaryFree:     "Ücretsiz",
+      summaryGrand:    "Genel Toplam",
+      paypalSafe:      "🔒 Ödemeniz PayPal güvencesiyle korunmaktadır.",
+    },
+    en: {
+      navProducts: "Products",
+      navAbout:    "About",
+      navContact:  "Contact",
+      loginBtn:  "Sign In",
+      logoutBtn: "Sign Out",
+      viewCart:  "🛒 View My Cart",
+      continueShopping: "Continue Shopping",
+      heroTag:   "100% Natural · Handmade",
+      heroTitle: "We Bring the Village's<br />Bounty to Your Table",
+      heroDesc:  "Olive oil, paste, pickles and more, produced without additives using traditional methods.",
+      heroBtn:   "Explore Products",
+      feat1Title: "Natural Ingredients",
+      feat1Desc:  "No additives, colorings or preservatives.",
+      feat2Title: "Fast Shipping",
+      feat2Desc:  "Your order arrives at your door within 2–3 business days.",
+      feat3Title: "Secure Payment",
+      feat3Desc:  "Easy and secure shopping with PayPal protection.",
+      productsTitle: "Our Products",
+      productsSub:   "Hand-picked flavors from field to table",
+      filterAll:    "All",
+      filterYag:    "Olive Oil",
+      filterSalca:  "Paste",
+      filterTursu:  "Pickles",
+      filterZeytin: "Olives",
+      addToCart:    "Add to Cart",
+      aboutTitle: "About Us",
+      aboutP1:    "We produce in the fertile lands of the Aegean, with recipes passed down from generation to generation. Every jar, every bottle — prepared with love and care.",
+      aboutP2:    "Our olive oil is obtained by cold-pressing, our paste is sun-dried, and our pickles are made with traditional rock salt.",
+      statExp:       "Years of Experience",
+      statCustomers: "Happy Customers",
+      statProducts:  "Different Products",
+      contactTitle: "Contact",
+      contactSub:   "Reach out to us with your questions",
+      contactName:  "Your Name",
+      contactEmail: "Email",
+      contactMsg:   "Your message...",
+      contactSend:  "Send",
+      footerRights: "© 2025 All rights reserved.",
+      drawerTitle:   "My Cart",
+      drawerTotal:   "Total",
+      drawerViewBtn: "View Cart",
+      cartEmpty:     "Your cart is empty.",
+      cartLoginMsg:  "To use the cart,",
+      cartLoginLink: "sign in",
+      tabLogin:       "Sign In",
+      tabRegister:    "Register",
+      labelEmail:     "Email",
+      labelPassword:  "Password",
+      labelName:      "Full Name",
+      labelPassword2: "Confirm Password",
+      phEmail:        "example@mail.com",
+      phPassword:     "••••••••",
+      phName:         "Full Name",
+      phRegPass:      "At least 6 characters",
+      phRegPass2:     "Repeat password",
+      loginSubmit:    "Sign In",
+      registerSubmit: "Register",
+      passMatch:      "Passwords do not match.",
+      toastRemoved:       "Item removed from cart.",
+      toastLoginRequired: "Please sign in to add items to cart.",
+      toastAdded:         "added to cart ✓",
+      toastMsgSent:       "Your message has been sent, thank you!",
+      toastPayOk:         "Payment successful! Thank you 🎉",
+      toastPayErr:        "An error occurred during payment.",
+      sepetSubDefault: "Your cart items are listed below.",
+      sepetEmpty:      "Your cart is currently empty.",
+      sepetLoginMsg:   "Please sign in to view your cart.",
+      sepetLoginBtn:   "Sign In / Register",
+      sepetNoItems:    "You have no items in your cart yet.",
+      sepetShopBtn:    "Start Shopping",
+      colProduct:      "Product",
+      colUnit:         "Unit Price",
+      colQty:          "Qty",
+      colTotal:        "Total",
+      summaryTitle:    "Order Summary",
+      summarySubtotal: "Subtotal",
+      summaryShipping: "Shipping",
+      summaryFree:     "Free",
+      summaryGrand:    "Grand Total",
+      paypalSafe:      "🔒 Your payment is protected by PayPal.",
+    },
+  };
+
+  function getSelected() { return localStorage.getItem(KEY) || "tr"; }
+  function setSelected(lang) { if (LANGS.includes(lang)) localStorage.setItem(KEY, lang); }
+  function t(key) { return (T[getSelected()] || T.tr)[key] || T.tr[key] || key; }
+
+  function applyLang() {
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.dataset.i18n;
+      const val = t(key);
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        el.placeholder = val;
+      } else if (val.includes("<")) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+    document.documentElement.lang = getSelected();
+  }
+
+  return { getSelected, setSelected, t, applyLang, LANGS };
+})();
