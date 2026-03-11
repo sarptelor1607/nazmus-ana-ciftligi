@@ -150,10 +150,10 @@
       </div>
       <form class="contact-form" id="contactForm">
         <div class="form-row">
-          <input type="text"  data-i18n="contactName"  placeholder="Adınız"   required />
-          <input type="email" data-i18n="contactEmail" placeholder="E-posta"  required />
+          <input type="text"  name="name"    data-i18n="contactName"  placeholder="Adınız"   required />
+          <input type="email" name="email"   data-i18n="contactEmail" placeholder="E-posta"  required />
         </div>
-        <textarea data-i18n="contactMsg" placeholder="Mesajınız..." rows="4" required></textarea>
+        <textarea name="message" data-i18n="contactMsg" placeholder="Mesajınız..." rows="4" required></textarea>
         <button type="submit" class="btn btn--primary" data-i18n="contactSend">Gönder</button>
       </form>
     </div>

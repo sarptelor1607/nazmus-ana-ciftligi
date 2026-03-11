@@ -297,11 +297,31 @@ function initLangSwitcher() {
 }
 
 // ===== CONTACT =====
+const FORMSPREE_ID = "xyknwjoq";
+
 function initContactForm() {
-  document.getElementById("contactForm").addEventListener("submit", (e) => {
+  document.getElementById("contactForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    showToast(Lang.t("toastMsgSent"));
-    e.target.reset();
+    const form = e.target;
+    const btn  = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method:  "POST",
+        headers: { "Accept": "application/json" },
+        body:    new FormData(form),
+      });
+      if (res.ok) {
+        showToast(Lang.t("toastMsgSent"));
+        form.reset();
+      } else {
+        showToast(Lang.t("toastMsgErr"));
+      }
+    } catch {
+      showToast(Lang.t("toastMsgErr"));
+    } finally {
+      btn.disabled = false;
+    }
   });
 }
 

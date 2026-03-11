@@ -79,6 +79,7 @@ const Lang = (() => {
       toastLoginRequired:"Sepete eklemek için giriş yapın.",
       toastAdded:        "sepete eklendi ✓",
       toastMsgSent:      "Mesajınız iletildi, teşekkürler!",
+      toastMsgErr:       "Mesaj gönderilemedi, lütfen tekrar deneyin.",
       toastPayOk:        "Ödeme başarılı! Teşekkürler 🎉",
       toastPayErr:       "Ödeme sırasında hata oluştu.",
       // Sepet page
@@ -163,6 +164,7 @@ const Lang = (() => {
       toastLoginRequired: "Please sign in to add items to cart.",
       toastAdded:         "added to cart ✓",
       toastMsgSent:       "Your message has been sent, thank you!",
+      toastMsgErr:        "Message could not be sent, please try again.",
       toastPayOk:         "Payment successful! Thank you 🎉",
       toastPayErr:        "An error occurred during payment.",
       sepetSubDefault: "Your cart items are listed below.",
