@@ -3,14 +3,14 @@ const PRODUCTS = [
   {
     id: 1, emoji: "🫒", category: "yag", price: 480,
     name: "Sıkma Zeytinyağı",     nameEn: "Cold-Pressed Olive Oil (500ml)",
-    desc: "Soğuk sıkma, natürel, erken hasat. 500 ml cam şişe.",
+    desc: "Soğuk sıkma, doğal, erken hasat. 500 ml cam şişe.",
     descEn: "Cold-pressed, natural, early harvest. 500 ml glass bottle.",
     badge: "Zeytinyağı", badgeEn: "Olive Oil",
   },
   {
     id: 2, emoji: "🫒", category: "yag", price: 590,
     name: "Zeytinyağı Büyük Boy", nameEn: "Cold-Pressed Olive Oil (1L)",
-    desc: "Soğuk sıkma, natürel, erken hasat. 1 lt cam şişe.",
+    desc: "Soğuk sıkma, doğal, erken hasat. 1 lt cam şişe.",
     descEn: "Cold-pressed, natural, early harvest. 1 lt glass bottle.",
     badge: "Zeytinyağı", badgeEn: "Olive Oil",
   },
