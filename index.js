@@ -7,7 +7,7 @@ const PRODUCTS = [
   { id: 3, name: "Ev Salçası — Domates",   desc: "Güneşte kurutulmuş, tuz hariç katkısız, 700 g kavanoz.",            price: 420, emoji: "🍅", category: "salca",  badge: "Salça"      },
   { id: 4, name: "Ev Salçası — Biber",     desc: "Acı biber harmanı, geleneksel tarif, 700 g kavanoz.",               price: 435, emoji: "🌶️", category: "salca",  badge: "Salça"      },
   { id: 5, name: "Karışık Turşu",          desc: "Mevsim sebzeleri, kaya tuzu, sirke. 1 lt kavanoz.",                 price: 410, emoji: "🥒", category: "tursu",  badge: "Turşu"      },
-  { id: 6, name: "Hıyar Turşusu",          desc: "Çıtır hıyar, sarımsak, dereotu. 1 lt kavanoz.",                    price: 400, emoji: "🥒", category: "tursu",  badge: "Turşu"      },
+  { id: 6, name: "Salatalık Turşusu",      desc: "Çıtır salatalık, sarımsak, dereotu. 1 lt kavanoz.",               price: 400, emoji: "🥒", category: "tursu",  badge: "Turşu"      },
   { id: 7, name: "Yeşil Zeytin",           desc: "El ile toplanmış, kırık yeşil zeytin, limon & sarımsaklı. 500 g.", price: 455, emoji: "🫒", category: "zeytin", badge: "Zeytin"     },
   { id: 8, name: "Siyah Zeytin",           desc: "Salamura siyah zeytin, yağlı ve aromalı. 500 g.",                  price: 470, emoji: "🫒", category: "zeytin", badge: "Zeytin"     },
 ];
