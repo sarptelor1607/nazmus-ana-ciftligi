@@ -813,17 +813,59 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+  /* Header */
+  .nav                { display: none; }
+  .header__inner      { gap: 12px; }
+
+  /* Hero */
+  .hero               { padding: 48px 0 56px; }
   .hero__inner        { grid-template-columns: 1fr; text-align: center; }
   .hero__img          { display: none; }
   .hero__desc         { max-width: 100%; }
-  .features__grid     { grid-template-columns: 1fr; }
-  .about__inner       { grid-template-columns: 1fr; }
+  .hero-arrow         { display: none; }
+  .hero-dots          { display: none; }
+
+  /* Features */
+  .features__grid     { grid-template-columns: 1fr; gap: 16px; }
+  .feature-card       { padding: 24px 20px; }
+
+  /* Products */
+  .products__grid     { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* About */
+  .about__inner       { grid-template-columns: 1fr; gap: 32px; }
   .about__stats       { grid-template-columns: repeat(3, 1fr); }
+
+  /* Contact */
   .form-row           { grid-template-columns: 1fr; }
-  .nav                { display: none; }
+
+  /* Footer */
   .footer__inner      { flex-direction: column; text-align: center; }
+
+  /* Sepet sayfası */
   .sepet-layout       { grid-template-columns: 1fr; }
   .cart-table__head   { display: none; }
   .cart-table__row    { grid-template-columns: 1fr 120px 1fr 40px; grid-template-rows: auto auto; gap: 8px; }
   .cart-table__row .ct-product { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
+  /* Header: dar ekranda dil ve para birimi seçiciyi gizle */
+  .lang-switcher      { display: none; }
+  .currency-switcher  { display: none; }
+  .logo__text         { font-size: 16px; }
+
+  /* Hero */
+  .hero               { padding: 36px 0 48px; }
+  .hero__title        { font-size: 28px; }
+
+  /* Ürünler: dar ekranda tek sütun */
+  .products__grid     { grid-template-columns: 1fr; }
+
+  /* About stats */
+  .about__stats       { grid-template-columns: 1fr; gap: 16px; }
+  .stat__num          { font-size: 28px; }
+
+  /* Sepet satırı */
+  .cart-table__row    { grid-template-columns: 1fr 100px 1fr 36px; }
 }
