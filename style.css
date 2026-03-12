@@ -812,18 +812,27 @@ a { color: inherit; text-decoration: none; }
 #paypalButtonContainer { margin-top: 4px; }
 
 /* ===== RESPONSIVE ===== */
+
+/* Overflow'u önle */
+body { overflow-x: hidden; }
+
 @media (max-width: 768px) {
-  /* Header */
+  /* Header: dil + para birimi seçiciyi gizle, sığdır */
   .nav                { display: none; }
-  .header__inner      { gap: 12px; }
+  .lang-switcher      { display: none; }
+  .currency-switcher  { display: none; }
+  .header__inner      { gap: 8px; }
+  .logo__text         { white-space: nowrap; font-size: 16px; }
 
   /* Hero */
-  .hero               { padding: 48px 0 56px; }
-  .hero__inner        { grid-template-columns: 1fr; text-align: center; }
-  .hero__img          { display: none; }
+  .hero               { padding: 40px 0 52px; }
+  .hero__inner        { grid-template-columns: 1fr; text-align: center; gap: 24px; }
   .hero__desc         { max-width: 100%; }
   .hero-arrow         { display: none; }
   .hero-dots          { display: none; }
+  /* Showcase göster ama küçük ve responsive */
+  .hero-showcase      { width: min(240px, 65vw); height: min(240px, 65vw); }
+  .hero-showcase__emoji { font-size: 72px; }
 
   /* Features */
   .features__grid     { grid-template-columns: 1fr; gap: 16px; }
@@ -850,22 +859,28 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 480px) {
-  /* Header: dar ekranda dil ve para birimi seçiciyi gizle */
-  .lang-switcher      { display: none; }
-  .currency-switcher  { display: none; }
-  .logo__text         { font-size: 16px; }
+  /* Header: çok dar ekranda login butonu küçülsün */
+  .logo__text         { font-size: 14px; }
+  #openAuthBtn        { padding: 6px 12px; font-size: 12px; }
 
   /* Hero */
-  .hero               { padding: 36px 0 48px; }
-  .hero__title        { font-size: 28px; }
+  .hero               { padding: 32px 0 40px; }
+  .hero__title        { font-size: 26px; }
+  .hero-showcase      { width: min(200px, 60vw); height: min(200px, 60vw); }
+  .hero-showcase__emoji { font-size: 56px; }
 
-  /* Ürünler: dar ekranda tek sütun */
+  /* Products: tek sütun */
   .products__grid     { grid-template-columns: 1fr; }
 
   /* About stats */
   .about__stats       { grid-template-columns: 1fr; gap: 16px; }
   .stat__num          { font-size: 28px; }
 
-  /* Sepet satırı */
+  /* Sepet */
   .cart-table__row    { grid-template-columns: 1fr 100px 1fr 36px; }
+}
+
+@media (max-width: 360px) {
+  /* Çok küçük ekranlar: logo yazısını gizle */
+  .logo__text         { display: none; }
 }
