@@ -828,7 +828,9 @@ body { overflow-x: hidden; }
   .hero               { padding: 40px 0 52px; }
   .hero__inner        { grid-template-columns: 1fr; text-align: center; gap: 24px; }
   .hero__desc         { max-width: 100%; }
-  .hero-arrow         { display: none; }
+  .hero-arrow         { width: 40px; height: 40px; font-size: 20px; }
+  .hero-arrow--prev   { left: 8px; }
+  .hero-arrow--next   { right: 8px; }
   .hero-dots          { display: none; }
   /* Showcase göster ama küçük ve responsive */
   .hero-showcase      { width: min(240px, 65vw); height: min(240px, 65vw); }
