@@ -356,10 +356,12 @@ function initLangSwitcher() {
 // ===== HERO SLIDER =====
 const SLIDE_INTERVAL = 5000;
 const SLIDE_BG = {
-  yag:    ["#f0fdf4", "#dcfce7"],
-  salca:  ["#fff7ed", "#fed7aa"],
-  tursu:  ["#ecfdf5", "#a7f3d0"],
-  zeytin: ["#fafaf9", "#d6d3d1"],
+  yag:             { bg: ["#f0fdf4", "#dcfce7"], circle: ["#b7e4c7", "#74c69d"], bgImg: "images/hero-bg/yag.jpg" },
+  salca_domates:   { bg: ["#fff7ed", "#fed7aa"], circle: ["#fca5a5", "#ef4444"], bgImg: "images/hero-bg/salca_domates.jpg" },
+  salca_biber:     { bg: ["#fff1f2", "#fecdd3"], circle: ["#fb923c", "#ea580c"], bgImg: "images/hero-bg/salca_biber.jpg" },
+  tursu_karisik:   { bg: ["#ecfdf5", "#a7f3d0"], circle: ["#6ee7b7", "#10b981"], bgImg: "images/hero-bg/tursu_karisik.jpg" },
+  tursu_salatalik: { bg: ["#f0fdf4", "#bbf7d0"], circle: ["#4ade80", "#16a34a"], bgImg: "images/hero-bg/tursu_salatalik.jpg" },
+  zeytin:          { bg: ["#fafaf9", "#d6d3d1"], circle: ["#d6d3d1", "#a8a29e"], bgImg: "images/hero-bg/zeytin.jpg" },
 };
 let _heroRefresh = null;
 
@@ -384,25 +386,58 @@ function initHeroSlider() {
   }
 
   function updateBg() {
-    const [c1, c2] = SLIDE_BG[PRODUCTS[current].category] || ["#f0fdf4", "#dcfce7"];
-    heroEl.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
-    const [s1, s2] = SLIDE_BG[PRODUCTS[current].category] || ["#b7e4c7", "#74c69d"];
-    showcase.style.background = `linear-gradient(135deg, ${s1 === "#f0fdf4" ? "#b7e4c7" : s1}, ${s2 === "#dcfce7" ? "#74c69d" : s2})`;
+    const p = PRODUCTS[current];
+    const data = SLIDE_BG[p.bgCategory || p.category] || {};
+    const bgImg = data.bgImg;
+    if (bgImg) {
+      heroEl.style.background = `url("${bgImg}") center/cover no-repeat`;
+      heroEl.classList.add("has-bg-photo");
+    } else {
+      const [c1, c2] = data.bg || ["#f0fdf4", "#dcfce7"];
+      heroEl.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
+      heroEl.classList.remove("has-bg-photo");
+    }
+    if (!PRODUCTS[current].image) {
+      const [s1, s2] = data.circle || ["#b7e4c7", "#74c69d"];
+      showcase.style.background = `linear-gradient(135deg, ${s1}, ${s2})`;
+      showcase.classList.remove("has-product-img");
+    } else {
+      showcase.style.background = "none";
+      showcase.classList.add("has-product-img");
+    }
   }
 
   function renderShowcase(direction) {
     const p = PRODUCTS[current];
     const fromX = direction >= 0 ? "60px" : "-60px";
-    showcase.innerHTML = `
-      <span class="hero-showcase__emoji" style="transform:translateX(${fromX});opacity:0;transition:none">${p.emoji}</span>
-      <span class="hero-showcase__name">${pLang(p, "name")}</span>
-    `;
+    if (p.image) {
+      showcase.innerHTML = `
+        <img class="hero-showcase__img"
+             src="${p.image}"
+             alt="${pLang(p, "name")}"
+             style="transform:translateX(${fromX});opacity:0;transition:none">
+        <span class="hero-showcase__name">${pLang(p, "name")}</span>
+      `;
+      showcase.querySelector("img").onerror = function () {
+        showcase.classList.remove("has-product-img");
+        showcase.style.background = "";
+        showcase.innerHTML = `
+          <span class="hero-showcase__emoji" style="transform:translateX(0);opacity:1">${p.emoji}</span>
+          <span class="hero-showcase__name">${pLang(p, "name")}</span>
+        `;
+      };
+    } else {
+      showcase.innerHTML = `
+        <span class="hero-showcase__emoji" style="transform:translateX(${fromX});opacity:0;transition:none">${p.emoji}</span>
+        <span class="hero-showcase__name">${pLang(p, "name")}</span>
+      `;
+    }
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      const em = showcase.querySelector(".hero-showcase__emoji");
-      if (!em) return;
-      em.style.transition = "transform 0.5s cubic-bezier(.25,.46,.45,.94), opacity 0.5s ease";
-      em.style.transform = "translateX(0)";
-      em.style.opacity = "1";
+      const el = showcase.querySelector(".hero-showcase__img, .hero-showcase__emoji");
+      if (!el) return;
+      el.style.transition = "transform 0.5s cubic-bezier(.25,.46,.45,.94), opacity 0.5s ease";
+      el.style.transform = "translateX(0)";
+      el.style.opacity = "1";
     }));
   }
 
