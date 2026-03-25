@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ürün Yönetimi — Nazmuş Ana Çiftliği</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">🫒</span>
+        <span class="logo__text">Nazmuş Ana Çiftliği</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html#products">Ürünler</a>
+        <a href="siparisler.html">Siparişler</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Ürün Yönetimi</h1>
+      <p>Ürün ekle, düzenle veya sil</p>
+    </div>
+  </section>
+
+  <div class="container" style="padding:48px 24px 80px;display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start">
+
+    <!-- FORM -->
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:24px" id="formTitle">Yeni Ürün Ekle</h2>
+      <form id="productForm" style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" id="editId" />
+        <div class="form-group"><label>Ürün Adı (TR) *</label>
+          <input type="text" id="fName" required /></div>
+        <div class="form-group"><label>Ürün Adı (EN)</label>
+          <input type="text" id="fNameEn" /></div>
+        <div class="form-group"><label>Açıklama (TR)</label>
+          <input type="text" id="fDesc" /></div>
+        <div class="form-group"><label>Açıklama (EN)</label>
+          <input type="text" id="fDescEn" /></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="form-group"><label>Fiyat (₺) *</label>
+            <input type="number" id="fPrice" min="1" required /></div>
+          <div class="form-group"><label>Emoji</label>
+            <input type="text" id="fEmoji" placeholder="🫒" maxlength="4" /></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="form-group"><label>Kategori *</label>
+            <select id="fCategory" required style="padding:12px 16px;border:1.5px solid #e5e7eb;border-radius:var(--radius);font-size:15px;font-family:inherit">
+              <option value="yag">Zeytinyağı</option>
+              <option value="salca">Salça</option>
+              <option value="tursu">Turşu</option>
+              <option value="zeytin">Zeytin</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Rozet (TR)</label>
+            <input type="text" id="fBadge" /></div>
+        </div>
+        <div class="form-group"><label>Görsel Yolu</label>
+          <input type="text" id="fImage" placeholder="images/products/9.png" /></div>
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <button type="submit" class="btn btn--primary" id="submitBtn">Kaydet</button>
+          <button type="button" class="btn btn--outline" id="cancelBtn" style="display:none" onclick="resetForm()">İptal</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ÜRÜN LİSTESİ -->
+    <div>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:20px">Mevcut Ürünler</h2>
+      <div id="productList"></div>
+    </div>
+  </div>
+
+  <style>
+    @media(max-width:768px){ .container > div[style*="grid"] { grid-template-columns:1fr!important; } }
+    .admin-row { display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--white);
+      border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:10px; }
+    .admin-row img { width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0; }
+    .admin-row__info { flex:1; }
+    .admin-row__name { font-size:15px;font-weight:600; }
+    .admin-row__meta { font-size:12px;color:var(--gray); }
+    .admin-row__actions { display:flex;gap:6px;flex-shrink:0; }
+  </style>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="lang.js"></script>
+  <script src="currency.js"></script>
+  <script src="auth.js"></script>
+  <script src="products.js"></script>
+  <script src="urun-ekle.js"></script>
+</body>
+</html>

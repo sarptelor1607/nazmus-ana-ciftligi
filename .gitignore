@@ -11,3 +11,9 @@ desktop.ini
 
 # Logs
 *.log
+
+# Environment (şifre içerir — asla push'lama)
+.env
+
+# Node
+node_modules/

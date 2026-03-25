@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sipariş Geçmişi — Nazmuş Ana Çiftliği</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">🫒</span>
+        <span class="logo__text">Nazmuş Ana Çiftliği</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html#products">Ürünler</a>
+        <a href="sepet.html">Sepetim</a>
+      </nav>
+      <div class="header__actions">
+        <button class="btn btn--outline btn--sm" id="openAuthBtn">Giriş Yap</button>
+        <div class="user-menu" id="userMenu" style="display:none">
+          <button class="user-menu__trigger" id="userMenuTrigger">
+            <span class="user-avatar" id="userAvatar"></span>
+            <span id="userName"></span>
+          </button>
+          <div class="user-menu__dropdown" id="userDropdown">
+            <button class="user-menu__item user-menu__item--danger" id="logoutBtn">Çıkış Yap</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Sipariş Geçmişim</h1>
+      <p id="pageSubtitle">Tüm siparişleriniz burada listelenir</p>
+    </div>
+  </section>
+
+  <div class="container" style="padding:48px 24px 80px">
+    <div id="ordersContainer"></div>
+  </div>
+
+  <style>
+    .order-card { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden; }
+    .order-card__head { display:flex;justify-content:space-between;align-items:center;
+      padding:16px 24px;background:var(--light);border-bottom:1px solid #e5e7eb;flex-wrap:wrap;gap:8px; }
+    .order-card__id   { font-size:12px;color:var(--gray);font-family:monospace; }
+    .order-card__date { font-size:13px;color:var(--gray); }
+    .order-card__status { font-size:12px;font-weight:700;padding:4px 12px;border-radius:50px;
+      background:#d1fae5;color:#065f46; }
+    .order-card__body { padding:16px 24px; }
+    .order-item-row  { display:flex;justify-content:space-between;align-items:center;
+      padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px; }
+    .order-item-row:last-child { border:none; }
+    .order-card__total { display:flex;justify-content:flex-end;padding:12px 24px;
+      font-size:16px;font-weight:700;border-top:1px solid #e5e7eb; }
+    .order-card__total span:last-child { color:var(--green);margin-left:12px; }
+  </style>
+
+  <!-- AUTH MODAL (minimal) -->
+  <div class="modal-overlay" id="authOverlay">
+    <div class="modal">
+      <button class="modal-close" id="authClose">✕</button>
+      <p style="text-align:center;padding:20px;color:var(--gray)">
+        Sipariş geçmişinizi görmek için lütfen
+        <a href="index.html" style="color:var(--green);font-weight:600">ana sayfadan giriş yapın</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="lang.js"></script>
+  <script src="currency.js"></script>
+  <script src="auth.js"></script>
+  <script src="siparisler.js"></script>
+</body>
+</html>

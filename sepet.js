@@ -197,7 +197,24 @@ function renderPayPalButton() {
         }],
       }),
     onApprove: (_data, actions) =>
-      actions.order.capture().then(() => {
+      actions.order.capture().then(async (details) => {
+        const user = Auth.getCurrentUser();
+        await fetch('/api/orders', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId:        user?.id    || 'guest',
+            userEmail:     user?.email || '',
+            items:         Cart.getItems().map(i => ({
+              productId: i.id, name: i.name, nameEn: i.nameEn,
+              emoji: i.emoji, price: i.price, qty: i.qty,
+            })),
+            total:         Cart.getTotal(),
+            currency:      Currency.getSelected(),
+            paypalOrderId: details.id,
+            status:        'completed',
+          }),
+        });
         showToast(Lang.t("toastPayOk"));
         Cart.clear();
         renderSepet();
@@ -357,8 +374,9 @@ function initLangSwitcher() {
 
 // ---- Init ----
 document.addEventListener("DOMContentLoaded", () => {
-  Auth.onReady(() => {
+  Auth.onReady(async () => {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    await loadProducts();
     initLangSwitcher();
     initCurrencySwitcher();
     initAuthUI();

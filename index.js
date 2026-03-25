@@ -262,14 +262,23 @@ function renderProducts(filter = "all") {
   const filtered = filter === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === filter);
   document.getElementById("productsGrid").innerHTML = filtered.map((p) => `
     <div class="product-card">
-      <div class="product-card__img">${p.emoji}</div>
+      <div class="product-card__img">
+        ${p.image
+          ? `<img src="${p.image}" alt="${pLang(p,'name')}"
+               style="width:100%;height:200px;object-fit:cover"
+               onerror="this.outerHTML='<span style=\\'font-size:72px\\'>${p.emoji}</span>'">`
+          : `<span>${p.emoji}</span>`}
+      </div>
       <div class="product-card__body">
         <span class="product-card__badge">${pLang(p, "badge")}</span>
         <div class="product-card__name">${pLang(p, "name")}</div>
         <div class="product-card__desc">${pLang(p, "desc")}</div>
         <div class="product-card__footer">
           <span class="product-card__price">${Currency.formatPrice(p.price)}</span>
-          <button class="add-to-cart" onclick="handleAddToCart(${p.id})">${Lang.t("addToCart")}</button>
+          <div style="display:flex;gap:8px">
+            <a href="urun-detay.html?id=${p.id}" class="btn btn--outline btn--sm">Detay</a>
+            <button class="add-to-cart" onclick="event.stopPropagation();handleAddToCart(${p.id})">${Lang.t("addToCart")}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -490,10 +499,27 @@ function initContactForm() {
   });
 }
 
+// ===== SEARCH =====
+function initSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+  let timer;
+  input.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const q = input.value.trim();
+      await loadProducts(q ? { search: q } : {});
+      const activeFilter = document.querySelector(".filter-btn.active")?.dataset.filter || "all";
+      renderProducts(activeFilter);
+    }, 300);
+  });
+}
+
 // ===== INIT =====
 document.addEventListener("DOMContentLoaded", () => {
-  Auth.onReady(() => {
+  Auth.onReady(async () => {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    await loadProducts();
     initLangSwitcher();
     initHeroSlider();
     initCurrencySwitcher();
@@ -501,6 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initAuthModal();
     renderProducts();
     initFilters();
+    initSearch();
     initContactForm();
     updateCartCount();
     renderDrawer();

@@ -1,67 +1,10 @@
-// ===== ÜRÜN VERİLERİ — Köy Lezzetleri =====
-const PRODUCTS = [
-  {
-    id: 1, emoji: "🫒", category: "yag", price: 480,
-    image: "images/products/1.png",
-    name: "Sıkma Zeytinyağı",     nameEn: "Cold-Pressed Olive Oil (500ml)",
-    desc: "Soğuk sıkma, doğal, erken hasat. 500 ml cam şişe.",
-    descEn: "Cold-pressed, natural, early harvest. 500 ml glass bottle.",
-    badge: "Zeytinyağı", badgeEn: "Olive Oil",
-  },
-  {
-    id: 2, emoji: "🫒", category: "yag", price: 590,
-    image: "images/products/2.png",
-    name: "Zeytinyağı Büyük Boy", nameEn: "Cold-Pressed Olive Oil (1L)",
-    desc: "Soğuk sıkma, doğal, erken hasat. 1 lt cam şişe.",
-    descEn: "Cold-pressed, natural, early harvest. 1 lt glass bottle.",
-    badge: "Zeytinyağı", badgeEn: "Olive Oil",
-  },
-  {
-    id: 3, emoji: "🍅", category: "salca", bgCategory: "salca_domates", price: 420,
-    image: "images/products/3.png",
-    name: "Ev Salçası — Domates", nameEn: "Homemade Tomato Paste",
-    desc: "Güneşte kurutulmuş, tuz hariç katkısız, 700 g kavanoz.",
-    descEn: "Sun-dried, additive-free except salt, 700 g jar.",
-    badge: "Salça", badgeEn: "Paste",
-  },
-  {
-    id: 4, emoji: "🌶️", category: "salca", bgCategory: "salca_biber", price: 435,
-    image: "images/products/4.png",
-    name: "Ev Salçası — Biber",   nameEn: "Homemade Pepper Paste",
-    desc: "Acı biber harmanı, geleneksel tarif, 700 g kavanoz.",
-    descEn: "Hot pepper blend, traditional recipe, 700 g jar.",
-    badge: "Salça", badgeEn: "Paste",
-  },
-  {
-    id: 5, emoji: "🥒", category: "tursu", bgCategory: "tursu_karisik", price: 410,
-    image: "images/products/5.png",
-    name: "Karışık Turşu",        nameEn: "Mixed Pickles",
-    desc: "Mevsim sebzeleri, kaya tuzu, sirke. 1 lt kavanoz.",
-    descEn: "Seasonal vegetables, rock salt, vinegar. 1 lt jar.",
-    badge: "Turşu", badgeEn: "Pickles",
-  },
-  {
-    id: 6, emoji: "🥒", category: "tursu", bgCategory: "tursu_salatalik", price: 400,
-    image: "images/products/6.png",
-    name: "Salatalık Turşusu",    nameEn: "Cucumber Pickles",
-    desc: "Çıtır salatalık, sarımsak, dereotu. 1 lt kavanoz.",
-    descEn: "Crispy cucumber, garlic, dill. 1 lt jar.",
-    badge: "Turşu", badgeEn: "Pickles",
-  },
-  {
-    id: 7, emoji: "🫒", category: "zeytin", price: 455,
-    image: "images/products/7.png",
-    name: "Yeşil Zeytin",         nameEn: "Green Olives",
-    desc: "El ile toplanmış, kırık yeşil zeytin, limon & sarımsaklı. 500 g.",
-    descEn: "Hand-picked, cracked green olives with lemon & garlic. 500 g.",
-    badge: "Zeytin", badgeEn: "Olives",
-  },
-  {
-    id: 8, emoji: "🫒", category: "zeytin", price: 470,
-    image: "images/products/8.png",
-    name: "Siyah Zeytin",         nameEn: "Black Olives",
-    desc: "Salamura siyah zeytin, yağlı ve aromalı. 500 g.",
-    descEn: "Brine-cured black olives, oily and flavorful. 500 g.",
-    badge: "Zeytin", badgeEn: "Olives",
-  },
-];
+// ===== ÜRÜN VERİLERİ — API'den yüklenir =====
+let PRODUCTS = [];
+
+async function loadProducts(params = {}) {
+  const qs  = new URLSearchParams(params).toString();
+  const url = qs ? `/api/products?${qs}` : '/api/products';
+  const res = await fetch(url);
+  PRODUCTS  = await res.json();
+  return PRODUCTS;
+}
