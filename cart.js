@@ -1,5 +1,5 @@
-// ===== CART — Köy Lezzetleri =====
-// Her kullanıcının sepeti kendi ID'siyle ayrı tutulur: kl_cart_{userId}
+// ===== CART — Nazmuş Ana Çiftliği =====
+// Each user's cart is stored separately in localStorage under their own key: kl_cart_{userId}
 
 const Cart = (() => {
   function cartKey() {

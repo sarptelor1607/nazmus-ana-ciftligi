@@ -1,4 +1,4 @@
-// ===== ÜRÜN YÖNETİM SAYFASI =====
+// ===== PRODUCT MANAGEMENT PAGE (Admin) =====
 
 let toastTimer;
 function showToast(msg) {
@@ -17,7 +17,7 @@ async function loadAndRender() {
 function renderList() {
   const list = document.getElementById("productList");
   if (!PRODUCTS.length) {
-    list.innerHTML = '<p style="color:var(--gray)">Henüz ürün yok.</p>';
+    list.innerHTML = '<p style="color:var(--gray)">No products yet.</p>';
     return;
   }
   list.innerHTML = PRODUCTS.map(p => `
@@ -30,9 +30,9 @@ function renderList() {
         <div class="admin-row__meta">${p.badge} · ${p.price} ₺</div>
       </div>
       <div class="admin-row__actions">
-        <button class="btn btn--outline btn--sm" onclick="startEdit(${p.id})">Düzenle</button>
+        <button class="btn btn--outline btn--sm" onclick="startEdit(${p.id})">Edit</button>
         <button class="btn btn--sm" style="background:#fee2e2;color:#ef4444;border:none"
-          onclick="deleteProduct(${p.id})">Sil</button>
+          onclick="deleteProduct(${p.id})">Delete</button>
       </div>
     </div>
   `).join("");
@@ -41,8 +41,8 @@ function renderList() {
 function resetForm() {
   document.getElementById("productForm").reset();
   document.getElementById("editId").value = "";
-  document.getElementById("formTitle").textContent = "Yeni Ürün Ekle";
-  document.getElementById("submitBtn").textContent = "Kaydet";
+  document.getElementById("formTitle").textContent = "Add New Product";
+  document.getElementById("submitBtn").textContent = "Save";
   document.getElementById("cancelBtn").style.display = "none";
 }
 
@@ -59,20 +59,20 @@ function startEdit(id) {
   document.getElementById("fCategory").value= p.category|| "yag";
   document.getElementById("fBadge").value   = p.badge   || "";
   document.getElementById("fImage").value   = p.image   || "";
-  document.getElementById("formTitle").textContent  = "Ürünü Düzenle";
-  document.getElementById("submitBtn").textContent  = "Güncelle";
+  document.getElementById("formTitle").textContent  = "Edit Product";
+  document.getElementById("submitBtn").textContent  = "Update";
   document.getElementById("cancelBtn").style.display = "inline-block";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function deleteProduct(id) {
-  if (!confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
+  if (!confirm("Are you sure you want to delete this product?")) return;
   const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
   if (res.ok) {
-    showToast("Ürün silindi.");
+    showToast("Product deleted.");
     await loadAndRender();
   } else {
-    showToast("Silme başarısız.");
+    showToast("Delete failed.");
   }
 }
 
@@ -100,12 +100,12 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   });
 
   if (res.ok) {
-    showToast(editId ? "Ürün güncellendi!" : "Ürün eklendi!");
+    showToast(editId ? "Product updated!" : "Product added!");
     resetForm();
     await loadAndRender();
   } else {
     const err = await res.json();
-    showToast("Hata: " + (err.error || "Bilinmeyen hata"));
+    showToast("Error: " + (err.error || "Unknown error"));
   }
 });
 

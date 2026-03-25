@@ -1,4 +1,4 @@
-// ===== ÜRÜN VERİLERİ — API'den yüklenir =====
+// ===== PRODUCT DATA — loaded from the API =====
 let PRODUCTS = [];
 
 async function loadProducts(params = {}) {

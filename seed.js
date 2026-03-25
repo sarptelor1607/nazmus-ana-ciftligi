@@ -1,4 +1,4 @@
-// MongoDB'yi mevcut ürün verileriyle doldur
+// Seed MongoDB with the initial product catalogue
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Product  = require('./models/Product');
@@ -59,7 +59,7 @@ async function seed() {
   await mongoose.connect(MONGO_URI);
   await Product.deleteMany({});
   await Product.insertMany(products);
-  console.log(`✅ ${products.length} ürün MongoDB'ye aktarıldı!`);
+  console.log(`✅ ${products.length} products inserted into MongoDB!`);
   await mongoose.disconnect();
 }
 

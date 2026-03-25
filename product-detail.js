@@ -1,4 +1,4 @@
-// ===== ÜRÜN DETAY SAYFASI =====
+// ===== PRODUCT DETAIL PAGE =====
 
 let toastTimer;
 function showToast(msg) {
@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <p class="desc">${p.desc}</p>
         <div class="price" id="detayPrice">${Currency.formatPrice(p.price)}</div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="btn btn--primary" onclick="handleAdd()">🛒 Sepete Ekle</button>
-          <a href="index.html#products" class="btn btn--outline">← Ürünlere Dön</a>
+          <button class="btn btn--primary" onclick="handleAdd()">🛒 Add to Cart</button>
+          <a href="index.html#products" class="btn btn--outline">← Back to Products</a>
         </div>
       </div>
     `;
@@ -50,16 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.handleAdd = () => {
       if (!Auth.getCurrentUser()) {
-        showToast("Sepete eklemek için giriş yapın.");
+        showToast("Please sign in to add items to cart.");
         return;
       }
       Cart.add(p);
       updateCartCount();
-      showToast(`${p.name} sepete eklendi!`);
+      showToast(`${p.name} added to cart!`);
     };
 
     document.getElementById("cartBtn").addEventListener("click", () => {
-      location.href = "sepet.html";
+      location.href = "cart.html";
     });
   });
 });

@@ -2,7 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const Product = require('../models/Product');
 
-// GET /api/products  — tümünü listele (arama ve kategori filtresi desteklenir)
+// GET /api/products  — list all (supports ?search= and ?category= filters)
 router.get('/', async (req, res) => {
   try {
     const { search, category } = req.query;
@@ -16,18 +16,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/products/:id  — tek ürün
+// GET /api/products/:id  — single product
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ id: parseInt(req.params.id) });
-    if (!product) return res.status(404).json({ error: 'Ürün bulunamadı' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/products  — yeni ürün ekle
+// POST /api/products  — create new product (auto-increments id)
 router.post('/', async (req, res) => {
   try {
     const last  = await Product.findOne().sort({ id: -1 });
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT /api/products/:id  — güncelle
+// PUT /api/products/:id  — update product
 router.put('/:id', async (req, res) => {
   try {
     const product = await Product.findOneAndUpdate(
@@ -48,19 +48,19 @@ router.put('/:id', async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
-    if (!product) return res.status(404).json({ error: 'Ürün bulunamadı' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// DELETE /api/products/:id  — sil
+// DELETE /api/products/:id  — delete product
 router.delete('/:id', async (req, res) => {
   try {
     const product = await Product.findOneAndDelete({ id: parseInt(req.params.id) });
-    if (!product) return res.status(404).json({ error: 'Ürün bulunamadı' });
-    res.json({ message: 'Ürün silindi' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json({ message: 'Product deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

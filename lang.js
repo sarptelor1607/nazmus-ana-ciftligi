@@ -1,4 +1,4 @@
-// ===== DİL MODÜLü — Köy Lezzetleri =====
+// ===== LANGUAGE MODULE — Nazmuş Ana Çiftliği =====
 const Lang = (() => {
   const KEY   = "kl_lang";
   const LANGS = ["tr", "en"];

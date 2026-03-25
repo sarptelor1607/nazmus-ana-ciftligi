@@ -1,4 +1,4 @@
-// ===== AUTH — Supabase tabanlı =====
+// ===== AUTH — Supabase-based authentication =====
 
 const Auth = (() => {
   const SUPABASE_URL  = "https://ldjanptdlabmudrjxaqo.supabase.co";
@@ -10,7 +10,7 @@ const Auth = (() => {
   let _isReady  = false;
   const _readyCbs = [];
 
-  // Supabase oturum durumunu dinle — sayfa yüklenince hemen tetiklenir
+  // Listen for Supabase auth state changes — fires immediately on page load
   _sb.auth.onAuthStateChange((_event, session) => {
     const su = session?.user ?? null;
     _user = su ? {
@@ -26,42 +26,42 @@ const Auth = (() => {
     }
   });
 
-  // UI hazır olmadan önce oturumu bekle
+  // Wait for the session to be resolved before running UI code
   function onReady(cb) {
     if (_isReady) cb();
     else _readyCbs.push(cb);
   }
 
-  // Mevcut kullanıcıyı senkron döndür (onAuthStateChange'den önbelleğe alındı)
+  // Return the current user synchronously (cached from onAuthStateChange)
   function getCurrentUser() {
     return _user;
   }
 
-  // ---- Validasyon ----
+  // ---- Validation ----
   const NAME_REGEX = /^[a-zA-ZğĞüÜşŞıİöÖçÇ\s]+$/;
 
   function validateName(name) {
     const c = name.trim();
-    if (!c)               return "İsim boş bırakılamaz.";
-    if (c.length < 2)     return "İsim en az 2 karakter olmalı.";
-    if (c.length > 60)    return "İsim en fazla 60 karakter olabilir.";
-    if (!NAME_REGEX.test(c)) return "İsim yalnızca harf ve boşluk içerebilir.";
+    if (!c)               return "Name cannot be empty.";
+    if (c.length < 2)     return "Name must be at least 2 characters.";
+    if (c.length > 60)    return "Name cannot exceed 60 characters.";
+    if (!NAME_REGEX.test(c)) return "Name may only contain letters and spaces.";
     return null;
   }
   function validateEmail(email) {
     const c = email.trim().toLowerCase();
-    if (!c) return "E-posta boş bırakılamaz.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c)) return "Geçerli bir e-posta girin.";
+    if (!c) return "Email cannot be empty.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c)) return "Please enter a valid email address.";
     return null;
   }
   function validatePassword(pw) {
-    if (!pw)           return "Şifre boş bırakılamaz.";
-    if (pw.length < 6) return "Şifre en az 6 karakter olmalı.";
-    if (pw.length > 128) return "Şifre çok uzun.";
+    if (!pw)           return "Password cannot be empty.";
+    if (pw.length < 6) return "Password must be at least 6 characters.";
+    if (pw.length > 128) return "Password is too long.";
     return null;
   }
 
-  // ---- Kayıt Ol ----
+  // ---- Register ----
   async function register(name, email, password) {
     const nameErr = validateName(name);
     if (nameErr) return { success: false, error: nameErr };
@@ -80,11 +80,11 @@ const Auth = (() => {
     return { success: true };
   }
 
-  // ---- Giriş Yap ----
+  // ---- Login ----
   async function login(email, password) {
     const emailErr = validateEmail(email);
     if (emailErr) return { success: false, error: emailErr };
-    if (!password) return { success: false, error: "Şifre boş bırakılamaz." };
+    if (!password) return { success: false, error: "Password cannot be empty." };
 
     const { error } = await _sb.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
@@ -95,19 +95,19 @@ const Auth = (() => {
     return { success: true };
   }
 
-  // ---- Çıkış ----
+  // ---- Logout ----
   async function logout() {
     await _sb.auth.signOut();
   }
 
-  // ---- Hata mesajları Türkçeleştirme ----
+  // ---- Map Supabase error messages to user-friendly strings ----
   function _mapErr(msg) {
-    if (msg.includes("Invalid login credentials")) return "E-posta veya şifre hatalı.";
-    if (msg.includes("Email not confirmed"))       return "E-postanızı doğrulamadınız.";
+    if (msg.includes("Invalid login credentials")) return "Incorrect email or password.";
+    if (msg.includes("Email not confirmed"))       return "Please verify your email address.";
     if (msg.includes("already registered") || msg.includes("User already registered"))
-      return "Bu e-posta zaten kayıtlı.";
-    if (msg.includes("Password should be"))        return "Şifre en az 6 karakter olmalı.";
-    if (msg.includes("rate limit"))                return "Çok fazla deneme. Lütfen bekleyin.";
+      return "This email is already registered.";
+    if (msg.includes("Password should be"))        return "Password must be at least 6 characters.";
+    if (msg.includes("rate limit"))                return "Too many attempts. Please wait.";
     return msg;
   }
 

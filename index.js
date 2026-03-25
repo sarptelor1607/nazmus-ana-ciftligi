@@ -1,12 +1,12 @@
-// ===== INDEX SAYFASI — Köy Lezzetleri =====
-// PRODUCTS artık products.js içinde tanımlı (global değişken)
+// ===== MAIN PAGE — Nazmuş Ana Çiftliği =====
+// PRODUCTS is defined as a global in products.js
 
-// Mevcut dile göre ürün alanını döndür
+// Return the correct language field for a product
 function pLang(p, field) {
   return Lang.getSelected() === "en" && p[field + "En"] ? p[field + "En"] : p[field];
 }
 
-// Sepetteki item için dile göre ad/badge döndür (eski item'lar için PRODUCTS'tan yedekle)
+// Return the correct language field for a cart item (falls back to PRODUCTS for legacy items)
 function itemLang(item, field) {
   if (Lang.getSelected() === "en") {
     if (item[field + "En"]) return item[field + "En"];
@@ -16,7 +16,7 @@ function itemLang(item, field) {
   return item[field];
 }
 
-// ===== AUTH UI =====
+// ===== AUTH UI — show/hide login button vs. user menu =====
 function initAuthUI() {
   const user             = Auth.getCurrentUser();
   const openAuthBtn      = document.getElementById("openAuthBtn");
@@ -49,7 +49,7 @@ function initAuthUI() {
   document.addEventListener("click", () => userDropdown.classList.remove("open"));
 }
 
-// ===== AUTH MODAL =====
+// ===== AUTH MODAL — login / register with email verification =====
 const EMAILJS_PUBLIC_KEY = "yDBggSbpkFeuKjXA0";
 const EMAILJS_SERVICE    = "service_95tublp";
 const EMAILJS_TEMPLATE   = "template_wek1lf8";
@@ -171,7 +171,7 @@ function initAuthModal() {
   document.getElementById("verifyBackBtn").addEventListener("click", _resetVerifyStep);
 }
 
-// ===== TOAST =====
+// ===== TOAST — brief notification popup =====
 let toastTimer;
 function showToast(msg) {
   const toast = document.getElementById("toast");
@@ -181,12 +181,12 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
 }
 
-// ===== CART COUNT =====
+// ===== CART COUNT — update badge on cart icon =====
 function updateCartCount() {
   document.getElementById("cartCount").textContent = Cart.getCount();
 }
 
-// ===== CART DRAWER =====
+// ===== CART DRAWER — slide-in cart panel =====
 function renderDrawer() {
   const container = document.getElementById("cartItems");
   const footer    = document.getElementById("cartFooter");
@@ -217,7 +217,7 @@ function renderDrawer() {
       <span class="cart-item__emoji">${item.emoji}</span>
       <div class="cart-item__info">
         <div class="cart-item__name">${itemLang(item, "name")}</div>
-        <div class="cart-item__unit">Birim: ${Currency.formatPrice(item.price)}</div>
+        <div class="cart-item__unit">Unit: ${Currency.formatPrice(item.price)}</div>
         <div class="cart-item__price">${Currency.formatPrice(item.price * item.qty)}</div>
         <div class="cart-item__qty">
           <button class="qty-btn" onclick="drawerChangeQty(${item.id}, -1)">−</button>
@@ -257,7 +257,7 @@ function closeCart() {
   document.body.style.overflow = "";
 }
 
-// ===== PRODUCTS =====
+// ===== PRODUCTS — render product grid =====
 function renderProducts(filter = "all") {
   const filtered = filter === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === filter);
   document.getElementById("productsGrid").innerHTML = filtered.map((p) => `
@@ -276,7 +276,7 @@ function renderProducts(filter = "all") {
         <div class="product-card__footer">
           <span class="product-card__price">${Currency.formatPrice(p.price)}</span>
           <div style="display:flex;gap:8px">
-            <a href="urun-detay.html?id=${p.id}" class="btn btn--outline btn--sm">Detay</a>
+            <a href="product-detail.html?id=${p.id}" class="btn btn--outline btn--sm">Details</a>
             <button class="add-to-cart" onclick="event.stopPropagation();handleAddToCart(${p.id})">${Lang.t("addToCart")}</button>
           </div>
         </div>
@@ -309,6 +309,7 @@ function initFilters() {
 }
 
 // ===== CURRENCY SWITCHER =====
+
 function initCurrencySwitcher() {
   const switcher = document.getElementById("currencySwitcher");
   if (!switcher) return;
@@ -335,6 +336,7 @@ function initCurrencySwitcher() {
 }
 
 // ===== LANGUAGE SWITCHER =====
+
 function initLangSwitcher() {
   const switcher = document.getElementById("langSwitcher");
   if (!switcher) return;
@@ -362,7 +364,7 @@ function initLangSwitcher() {
   updateActive();
 }
 
-// ===== HERO SLIDER =====
+// ===== HERO SLIDER — auto-advancing product showcase with dots and arrows =====
 const SLIDE_INTERVAL = 5000;
 const SLIDE_BG = {
   yag:             { bg: ["#f0fdf4", "#dcfce7"], circle: ["#b7e4c7", "#74c69d"], bgImg: "images/hero-bg/yag.jpg" },
@@ -470,7 +472,7 @@ function initHeroSlider() {
   goTo(0, 1);
 }
 
-// ===== CONTACT =====
+// ===== CONTACT FORM — submits to Formspree =====
 const FORMSPREE_ID = "xyknwjoq";
 
 function initContactForm() {
@@ -499,7 +501,7 @@ function initContactForm() {
   });
 }
 
-// ===== SEARCH =====
+// ===== SEARCH — debounced live search via API =====
 function initSearch() {
   const input = document.getElementById("searchInput");
   if (!input) return;
@@ -515,7 +517,7 @@ function initSearch() {
   });
 }
 
-// ===== INIT =====
+// ===== INIT — wait for auth session, then bootstrap the page =====
 document.addEventListener("DOMContentLoaded", () => {
   Auth.onReady(async () => {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });

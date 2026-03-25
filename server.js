@@ -11,7 +11,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/nazmuss';
 // ── Middleware ──────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));   // statik dosyaları sun
+app.use(express.static(path.join(__dirname)));   // serve static files from project root
 
 // ── API Routes ──────────────────────────────────────────────
 app.use('/api/products', require('./routes/products'));
@@ -25,12 +25,12 @@ app.get('*', (req, res) => {
 // ── MongoDB + Server ────────────────────────────────────────
 mongoose.connect(MONGO_URI)
   .then(() => {
-    console.log('✅ MongoDB bağlantısı kuruldu');
+    console.log('✅ MongoDB connected');
     app.listen(PORT, () =>
-      console.log(`🚀 Sunucu http://localhost:${PORT} adresinde çalışıyor`)
+      console.log(`🚀 Server running at http://localhost:${PORT}`)
     );
   })
   .catch(err => {
-    console.error('❌ MongoDB bağlantı hatası:', err.message);
+    console.error('❌ MongoDB connection error:', err.message);
     process.exit(1);
   });

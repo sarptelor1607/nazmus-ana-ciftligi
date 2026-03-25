@@ -2,7 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const Order   = require('../models/Order');
 
-// GET /api/orders  — siparişleri listele (userId ile filtrele)
+// GET /api/orders  — list orders (optionally filtered by ?userId=)
 router.get('/', async (req, res) => {
   try {
     const { userId } = req.query;
@@ -14,18 +14,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/orders/:id  — tek sipariş
+// GET /api/orders/:id  — single order by MongoDB _id
 router.get('/:id', async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-    if (!order) return res.status(404).json({ error: 'Sipariş bulunamadı' });
+    if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json(order);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/orders  — yeni sipariş oluştur
+// POST /api/orders  — create new order
 router.post('/', async (req, res) => {
   try {
     const order = new Order(req.body);

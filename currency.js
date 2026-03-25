@@ -1,11 +1,11 @@
 // ===== CURRENCY — Nazmuş Ana Çiftliği =====
-// Tüm fiyatlar TL bazlı saklanır; bu modül görüntüleme için dönüştürür.
-// Kur güncellemesi için sadece RATES nesnesini değiştirin.
+// All prices are stored in Turkish Lira (TRY); this module converts them for display.
+// To update exchange rates, edit the RATES object below.
 
 const Currency = (() => {
   const KEY = "kl_currency";
 
-  // 1 yabancı para = kaç TL (manuel güncellenmeli)
+  // 1 foreign currency = how many TRY (update manually)
   const RATES = {
     TRY: 1,
     USD: 38.5,
@@ -26,7 +26,7 @@ const Currency = (() => {
     }
   }
 
-  // TL fiyatı seçili dövize çevirir ve sembolüyle formatlar
+  // Convert a TRY price to the selected currency and format it with the symbol
   function formatPrice(tlPrice) {
     const code     = getSelected();
     const symbol   = SYMBOLS[code];
@@ -34,13 +34,13 @@ const Currency = (() => {
     return `${symbol}${converted.toFixed(2)}`;
   }
 
-  // PayPal TRY kabul etmez → TRY seçiliyse USD kullan
+  // PayPal does not accept TRY — fall back to USD when TRY is selected
   function getPayPalCurrency() {
     const c = getSelected();
     return c === "TRY" ? "USD" : c;
   }
 
-  // PayPal için TL toplamını dövize çevirir
+  // Convert a TRY total to the PayPal currency amount
   function getPayPalAmount(tlTotal) {
     return (tlTotal / RATES[getPayPalCurrency()]).toFixed(2);
   }

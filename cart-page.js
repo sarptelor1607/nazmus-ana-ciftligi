@@ -1,9 +1,9 @@
-// ===== SEPET SAYFASI — Köy Lezzetleri =====
+// ===== CART PAGE — Nazmuş Ana Çiftliği =====
 const EMAILJS_PUBLIC_KEY = "yDBggSbpkFeuKjXA0";
 const EMAILJS_SERVICE    = "service_95tublp";
 const EMAILJS_TEMPLATE   = "template_wek1lf8";
 
-// Sepetteki item için dile göre ad/badge döndür (PRODUCTS global olarak products.js'den gelir)
+// Return the correct language field for a cart item (PRODUCTS global comes from products.js)
 function itemLang(item, field) {
   if (Lang.getSelected() === "en") {
     if (item[field + "En"]) return item[field + "En"];
@@ -180,7 +180,7 @@ function renderPayPalButton() {
 
   if (typeof paypal === "undefined") {
     container.innerHTML =
-      '<p style="color:#ef4444;font-size:13px;">PayPal yüklenemedi.</p>';
+      '<p style="color:#ef4444;font-size:13px;">PayPal could not be loaded.</p>';
     return;
   }
 
@@ -189,7 +189,7 @@ function renderPayPalButton() {
     createOrder: (_data, actions) =>
       actions.order.create({
         purchase_units: [{
-          description: "Nazmuş Ana Çiftliği Siparişi",
+          description: "Nazmuş Ana Çiftliği Order",
           amount: {
             value: Currency.getPayPalAmount(Cart.getTotal()),
             currency_code: Currency.getPayPalCurrency(),
@@ -229,7 +229,7 @@ function renderPayPalButton() {
   paypalRendered = true;
 }
 
-// ---- Sepet Render ----
+// ---- Cart Render ----
 function renderSepet() {
   const user   = Auth.getCurrentUser();
   const items  = Cart.getItems();
@@ -289,7 +289,7 @@ function renderSepet() {
         <button class="qty-btn" onclick="changeQty(${item.id}, +1)">+</button>
       </div>
       <div class="ct-total">${Currency.formatPrice(item.price * item.qty)}</div>
-      <button class="ct-remove" onclick="removeItem(${item.id})" title="Kaldır">✕</button>
+      <button class="ct-remove" onclick="removeItem(${item.id})" title="Remove">✕</button>
     </div>
   `).join("");
 
@@ -309,7 +309,7 @@ function renderSepet() {
   renderPayPalButton();
 }
 
-// ---- Eylemler ----
+// ---- Actions ----
 function changeQty(productId, delta) {
   Cart.changeQty(productId, delta);
   paypalRendered = false;
